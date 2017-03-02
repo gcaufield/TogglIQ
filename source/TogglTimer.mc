@@ -1,0 +1,7 @@
+
+class TogglTimer {
+	
+	function initialize() {
+	}
+
+}
