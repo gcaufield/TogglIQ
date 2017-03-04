@@ -5,6 +5,7 @@ using Toybox.Time as Time;
 using Toybox.Lang as Lang;
 using Toybox.Time.Gregorian as Date;
 using Toybox.Timer as Timer;
+using Toybox.StringUtil as Util;
 
 class TogglView extends Ui.View {
 
@@ -55,14 +56,29 @@ class TogglView extends Ui.View {
 
         if( _timer.getTimerState() == Toggl.TIMER_RUNNING ) {
             var duration = _timer.getTimerDuration();
-            //var currentTask = new Ui.Text();
-            // var taskSz = dc.getTextDimensions(mTmr.getActiveTask(), Gfx.FONT_MEDIUM);
+            var currentTask = _timer.getActiveTaskString();
+            // var currentTask = new Ui.Text();
 
-            //currentTask.setText(mTmr.getActiveTask());
             dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_DK_GRAY);
-            dc.drawText(
-            width/2,
-            height - 33, Gfx.FONT_SMALL, formatAsTime(duration.value()), Gfx.TEXT_JUSTIFY_CENTER);
+
+            var stringSize = dc.getTextDimensions(currentTask, Gfx.FONT_SMALL);
+            if( stringSize[0] > width - 100 ) {
+                currentTask = wrapString( dc, currentTask, 25, 3 );
+                stringSize = dc.getTextDimensions(currentTask, Gfx.FONT_SMALL);
+            }
+
+            dc.drawText( width/2,
+                ( height / 2 ) - ( stringSize[1] / 2 ),
+                Gfx.FONT_SMALL,
+                currentTask,
+                Gfx.TEXT_JUSTIFY_CENTER );
+
+            // Draw the Timer Label
+            dc.drawText( width/2,
+                height - 33,
+                Gfx.FONT_SMALL,
+                formatAsTime( duration.value() ),
+                Gfx.TEXT_JUSTIFY_CENTER );
         }
     }
 
@@ -94,4 +110,91 @@ class TogglView extends Ui.View {
         _uiUpdate.stop();
     }
 
+    //! Splits a string into an array of words
+    hidden function splitWords(currentTask) {
+        var letters = currentTask.toUtf8Array();
+        var wordStart = 0;
+        var wordEnd = 0;
+        var words = [];
+
+        // Split Words
+        for( var i = 0; i < letters.size(); i++ ) {
+            wordEnd = i;
+            if(letters[i] == ' ') {
+                // End of a word
+                if( wordStart != wordEnd ) {
+                    // New word
+                    words.add(Util.utf8ArrayToString(letters.slice(wordStart, wordEnd)));
+                }
+
+                wordStart = i + 1;
+            }
+        }
+
+        if( wordStart < letters.size() ) {
+            // We hit the end of the array with a valid word
+            words.add(Util.utf8ArrayToString(letters.slice(wordStart, null)));
+        }
+
+        return words;
+    }
+
+    hidden function wrapString(dc, currentTask, margin, maxNumLines) {
+        // We need to wrap the text if a single line does not fit on the display
+        var words = splitWords( currentTask );
+        var width = dc.getWidth();
+        var height = dc.getHeight();
+
+        currentTask = "";
+        var currentLine = "";
+        var newLine = "";
+        var newLineLength;
+        var numLines = 0;
+
+        for( var i = 0; i < words.size(); i++ ) {
+            var word = words[i];
+            var tempNewLine;
+            if( dc.getTextWidthInPixels( words[i], Gfx.FONT_SMALL ) >= ( width - ( 2* margin ) ) ) {
+                word = "...";
+            }
+
+            newLine = newLine + word;
+            tempNewLine = newLine;
+
+            if( numLines + 1 >= maxNumLines && ( i < ( words.size() - 1 ) ) ) {
+                // This is the last line and we still have words to add we need to start trying to append "..."
+                tempNewLine = tempNewLine + "...";
+            }
+
+            var newLineLength = dc.getTextWidthInPixels(tempNewLine, Gfx.FONT_SMALL);
+            if( newLineLength < ( width - ( 2 * margin ) ) ) {
+                // This line is okay.
+                currentLine = tempNewLine;
+                newLine = newLine + " ";
+
+            }
+            else if( currentLine.length() == 0 ) {
+                // This is a single word that is too long to fit on the display...
+                newLine = "...";
+            }
+            else {
+                // Append Current Line to our task, and start building a new line
+                currentTask = currentTask + currentLine;
+                currentLine = "";
+
+                numLines = numLines + 1;
+                if( numLines >= maxNumLines ) {
+                    break;
+                }
+                else {
+                    currentTask = currentTask + "\n";
+                    newLine = "";
+                    i--;
+                }
+            }
+        }
+
+        currentTask = currentTask + currentLine;
+        return currentTask;
+    }
 }

@@ -12,11 +12,12 @@ module Toggl {
         hidden var _togglTimer;
         hidden var _onPropertyChanged;
         hidden var _startMoment;
-    
+
+
         function initialize() {
             _togglTimer = null;
         }
-        
+
         hidden function onPropertyChanged(property) {
             if( _onPropertyChanged != null ) {
                 _onPropertyChanged.invoke(self, property);
@@ -25,7 +26,7 @@ module Toggl {
 
         function setTimer( togglTimer ) {
             _togglTimer = togglTimer;
-            
+
             if(_togglTimer != null) {
                 // Time string is in ISO8601 format:
                 // YYYY-MM-DDTHH:MM:SS
@@ -49,24 +50,38 @@ module Toggl {
         function setOnPropertyChanged( callback ) {
             _onPropertyChanged = callback;
         }
-        
+
         function clearOnPropertyChanged() {
             _onPropertyChanged = null;
         }
 
+        //! Retrieves the state of the Timer
         function getTimerState() {
             if( _togglTimer != null ) {
                 return Toggl.TIMER_RUNNING;
             }
-            
+
             return Toggl.TIMER_STOPPED;
         }
 
+        //! Retrives the Duration of the Active Timer
+        //! @returns [Time.Duration] The duration of the active timer,
+        //!     null if there is no active task
         function getTimerDuration() {
             if( _togglTimer != null ) {
                 return Time.now().subtract(_startMoment);
             }
 
+            return null;
+        }
+
+        //! Retrieves a string representing the active task
+        //! @returns [String] Representing the active task, null
+        //!     if there is no active task
+        function getActiveTaskString() {
+            if( _togglTimer != null ) {
+                return _togglTimer["description"];
+            }
             return null;
         }
     }
