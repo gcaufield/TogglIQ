@@ -41,7 +41,7 @@ class TogglApp extends App.AppBase {
 
     // Return the initial view of your application here
     function getInitialView() {
-        return [ new TogglView(_timer, _manager) ];
+        return [ new TogglView(_timer), new TogglViewBehaviourDelegate(_manager, _timer) ];
     }
 
 }

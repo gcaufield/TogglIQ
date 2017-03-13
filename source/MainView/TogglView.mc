@@ -10,13 +10,11 @@ using Toybox.StringUtil as Util;
 class TogglView extends Ui.View {
 
     hidden var _timer;
-    hidden var _controller;
     hidden var _uiUpdate;
 
-    function initialize(timer, controller) {
+    function initialize(timer) {
         View.initialize();
         _timer = timer;
-        _controller = controller;
         _uiUpdate = new Timer.Timer();
     }
 
