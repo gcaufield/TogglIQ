@@ -33,7 +33,6 @@ class TogglView extends Ui.View {
     // the state of this View and prepare it to be shown. This includes
     // loading resources into memory.
     function onShow() {
-        _controller.update();
         Ui.requestUpdate();
         _uiUpdate.start(method(:uiUpdate), 1000, true);
     }

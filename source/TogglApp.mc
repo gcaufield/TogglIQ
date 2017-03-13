@@ -13,10 +13,26 @@ class TogglApp extends App.AppBase {
     function onStart(state) {
         _timer = new Toggl.TogglTimer();
         _manager = new Toggl.TogglManager(_timer);
+
+        restoreTimer();
+        _manager.startUpdate();
+    }
+
+    function restoreTimer() {
+        var timer = getProperty("timer");
+        if(timer != null) {
+            _timer.setTimer( timer );
+        }
     }
 
     // onStop() is called when your application is exiting
     function onStop(state) {
+        // Save the current timer
+        setProperty("timer", _timer.getTimer());
+        _manager.stopUpdate();
+
+        _timer = null;
+        _manager = null;
     }
 
     // Return the initial view of your application here

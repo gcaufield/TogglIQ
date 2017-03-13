@@ -25,7 +25,7 @@ module Toggl {
             _updateTimer = new Timer.Timer();
         }
 
-        function onCurrentComplete(responseCode, data) {
+        hidden function onCurrentComplete(responseCode, data) {
             Sys.println(responseCode);
             if( responseCode == 200 ) {
                 _togglTimer.setTimer(data["data"]);
@@ -38,7 +38,7 @@ module Toggl {
             _updateTimer.start(method(:update), 5000, false);
         }
 
-        function update() {
+        hidden function update() {
             var headers = {
                 "Authorization" => "Basic " + _apiKey
             };
@@ -56,6 +56,14 @@ module Toggl {
                 method(:onCurrentComplete));
         }
 
+        //! Begins Updating the timer
+        //! Adds a slight delay before updating, to allow for app to scroll
+        function startUpdate() {
+            // Request an update in 750 ms, to allow for quick scrolling without wasting data
+            _updateTimer.start(method(:update), 750, false);
+        }
+
+        //! Stops the update timer
         function stopUpdate() {
             _updateTimer.stop();
         }

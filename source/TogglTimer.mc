@@ -84,5 +84,9 @@ module Toggl {
             }
             return null;
         }
+
+        function getTimer() {
+            return _togglTimer;
+        }
     }
 }
