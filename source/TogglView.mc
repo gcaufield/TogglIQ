@@ -22,7 +22,6 @@ class TogglView extends Ui.View {
 
     // Load your resources here
     function onLayout(dc) {
-        //setLayout(Rez.Layouts.MainLayout(dc));
     }
 
     function uiUpdate() {
@@ -39,9 +38,8 @@ class TogglView extends Ui.View {
 
     function updateTimerState(dc) {
         var colors = {
-            Toggl.TIMER_REFRESH=>Gfx.COLOR_ORANGE,
-            Toggl.TIMER_RUNNING=>Gfx.COLOR_GREEN,
-            Toggl.TIMER_STOPPED=>Gfx.COLOR_RED
+            Toggl.TIMER_STATE_RUNNING=> Gfx.COLOR_GREEN,
+            Toggl.TIMER_STATE_STOPPED=> Gfx.COLOR_RED
         };
 
         var width = dc.getWidth();
@@ -49,22 +47,23 @@ class TogglView extends Ui.View {
 
         dc.setColor(Gfx.COLOR_TRANSPARENT, Gfx.COLOR_DK_GRAY);
         dc.clear();
-        dc.setColor(colors[_timer.getTimerState()], Gfx.COLOR_DK_GRAY);
+        if(_timer.getWarnings().isEmpty()) {
+            dc.setColor(colors[_timer.getTimerState()], Gfx.COLOR_DK_GRAY);
+        } else {
+            dc.setColor(Gfx.COLOR_ORANGE, Gfx.COLOR_DK_GRAY);
+        }
         dc.setPenWidth(6);
         dc.drawArc(width/2, height/2, width/2 - 3, Gfx.ARC_CLOCKWISE, 245, 295);
 
-        if( _timer.getTimerState() == Toggl.TIMER_RUNNING ) {
+        if( _timer.getTimerState() == Toggl.TIMER_STATE_RUNNING ) {
             var duration = _timer.getTimerDuration();
             var currentTask = _timer.getActiveTaskString();
-            // var currentTask = new Ui.Text();
 
             dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_DK_GRAY);
 
+            currentTask = wrapString( dc, currentTask, 20, 3 );
+
             var stringSize = dc.getTextDimensions(currentTask, Gfx.FONT_SMALL);
-            if( stringSize[0] > width - 100 ) {
-                currentTask = wrapString( dc, currentTask, 25, 3 );
-                stringSize = dc.getTextDimensions(currentTask, Gfx.FONT_SMALL);
-            }
 
             dc.drawText( width/2,
                 ( height / 2 ) - ( stringSize[1] / 2 ),

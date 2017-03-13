@@ -1,3 +1,0 @@
-<layout id="MainLayout">
-	<label text="Current Timer" font="Gfx.FONT_LARGE" color="Gfx.COLOR_WHITE"/>
-</layout>

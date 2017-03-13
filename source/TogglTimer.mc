@@ -3,25 +3,25 @@ using Toybox.Time as Time;
 
 module Toggl {
     enum {
-        TIMER_REFRESH,
-        TIMER_RUNNING,
-        TIMER_STOPPED
+        TIMER_STATE_RUNNING,
+        TIMER_STATE_STOPPED
+    }
+
+    enum {
+        TIMER_WARNING_NONE,
+        TIMER_WARNING_NO_API_KEY,
+        TIMER_WARNING_NO_NETWORK
     }
 
     class TogglTimer {
         hidden var _togglTimer;
         hidden var _onPropertyChanged;
         hidden var _startMoment;
-
+        hidden var _warnings;
 
         function initialize() {
             _togglTimer = null;
-        }
-
-        hidden function onPropertyChanged(property) {
-            if( _onPropertyChanged != null ) {
-                _onPropertyChanged.invoke(self, property);
-            }
+            _warnings = {};
         }
 
         function setTimer( togglTimer ) {
@@ -40,28 +40,27 @@ module Toggl {
                     :second => timeStr.substring(17, 19).toNumber()
                 });
             }
-
-            onPropertyChanged(:timerState);
         }
 
-        function setRequestState( requestState ) {
+        function setWarning( warning ) {
+            if(!_warnings.hasKey(warning)) {
+                _warnings.put(warning, true);
+            }
         }
 
-        function setOnPropertyChanged( callback ) {
-            _onPropertyChanged = callback;
-        }
-
-        function clearOnPropertyChanged() {
-            _onPropertyChanged = null;
+        function clearWarning( warning ) {
+            if(_warnings.hasKey(warning)) {
+                _warnings.remove(warning);
+            }
         }
 
         //! Retrieves the state of the Timer
         function getTimerState() {
             if( _togglTimer != null ) {
-                return Toggl.TIMER_RUNNING;
+                return Toggl.TIMER_STATE_RUNNING;
             }
 
-            return Toggl.TIMER_STOPPED;
+            return Toggl.TIMER_STATE_STOPPED;
         }
 
         //! Retrives the Duration of the Active Timer
@@ -87,6 +86,10 @@ module Toggl {
 
         function getTimer() {
             return _togglTimer;
+        }
+
+        function getWarnings() {
+            return _warnings;
         }
     }
 }

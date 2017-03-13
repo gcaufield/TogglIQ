@@ -56,7 +56,12 @@ module Toggl {
         }
 
         function setApiKey(apiKey) {
-            _apiKey = StringUtil.encodeBase64(apiKey + ":api_token");
+            if(apiKey == "" || apiKey == null) {
+                _togglTimer.setWarning(Toggl.TIMER_WARNING_NO_API_KEY);
+            } else {
+                _togglTimer.clearWarning(Toggl.TIMER_WARNING_NO_API_KEY);
+                _apiKey = StringUtil.encodeBase64(apiKey + ":api_token");
+            }
         }
 
         //! Begins Updating the timer
