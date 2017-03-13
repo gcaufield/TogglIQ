@@ -5,12 +5,6 @@ using Toybox.Timer as Timer;
 
 module Toggl {
     class TogglManager {
-        hidden enum {
-            MANAGER_STATE_INIT,
-            MANAGER_STATE_ERROR,
-            MANAGER_STATE_DATA
-        }
-
         hidden var _apiKey;
         hidden var _state;
         hidden var _updateTimer;
@@ -20,18 +14,17 @@ module Toggl {
         function initialize(togglTimer, apiKey) {
             _togglTimer = togglTimer;
             setApiKey(apiKey);
-            _state = MANAGER_STATE_INIT;
             _updateTimer = new Timer.Timer();
         }
 
         function onCurrentComplete(responseCode, data) {
             Sys.println(responseCode);
             if( responseCode == 200 ) {
+                _togglTimer.clearWarning(Toggl.TIMER_WARNING_INVALID_API_KEY);
                 _togglTimer.setTimer(data["data"]);
-                _state = MANAGER_STATE_DATA;
             }
             else {
-                _state = MANAGER_STATE_ERROR;
+                _togglTimer.setWarning(Toggl.TIMER_WARNING_INVALID_API_KEY);
             }
 
             _updateTimer.start(method(:update), 5000, false);

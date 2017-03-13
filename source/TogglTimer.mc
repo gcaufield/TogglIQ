@@ -10,6 +10,7 @@ module Toggl {
     enum {
         TIMER_WARNING_NONE,
         TIMER_WARNING_NO_API_KEY,
+        TIMER_WARNING_INVALID_API_KEY,
         TIMER_WARNING_NO_NETWORK
     }
 

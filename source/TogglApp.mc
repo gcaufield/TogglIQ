@@ -35,6 +35,10 @@ class TogglApp extends App.AppBase {
         _manager = null;
     }
 
+    function onSettingsChanged() {
+        _manager.setApiKey(getProperty("apiKey"));
+    }
+
     // Return the initial view of your application here
     function getInitialView() {
         return [ new TogglView(_timer, _manager) ];
