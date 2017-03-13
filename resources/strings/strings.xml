@@ -1,3 +1,4 @@
 <strings>
-    <string id="AppName">toggl</string>
+    <string id="AppName">TogglIQ</string>
+    <string id="ApiKey">Toggl API Key</string>
 </strings>

@@ -17,15 +17,14 @@ module Toggl {
 
         hidden var _togglTimer;
 
-        function initialize(togglTimer) {
+        function initialize(togglTimer, apiKey) {
             _togglTimer = togglTimer;
-            _apiKey = StringUtil.encodeBase64(
-                "466c32773ae7d027574fb1282428baf8:api_token");
+            setApiKey(apiKey);
             _state = MANAGER_STATE_INIT;
             _updateTimer = new Timer.Timer();
         }
 
-        hidden function onCurrentComplete(responseCode, data) {
+        function onCurrentComplete(responseCode, data) {
             Sys.println(responseCode);
             if( responseCode == 200 ) {
                 _togglTimer.setTimer(data["data"]);
@@ -38,7 +37,7 @@ module Toggl {
             _updateTimer.start(method(:update), 5000, false);
         }
 
-        hidden function update() {
+        function update() {
             var headers = {
                 "Authorization" => "Basic " + _apiKey
             };
@@ -54,6 +53,10 @@ module Toggl {
                 null,
                 options,
                 method(:onCurrentComplete));
+        }
+
+        function setApiKey(apiKey) {
+            _apiKey = StringUtil.encodeBase64(apiKey + ":api_token");
         }
 
         //! Begins Updating the timer

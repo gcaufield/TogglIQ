@@ -94,18 +94,12 @@ class TogglView extends Ui.View {
     function onUpdate(dc) {
         // Call the parent onUpdate function to redraw the layout
         updateTimerState(dc);
-
-        //label = new Ui.Text( {:text => "Timer" } );
-        //label.draw(dc);
-        // Call the parent onUpdate function to redraw the layout
-        //View.onUpdate(dc);
     }
 
     // Called when this View is removed from the screen. Save the
     // state of this View here. This includes freeing resources from
     // memory.
     function onHide() {
-        _controller.stopUpdate();
         _uiUpdate.stop();
     }
 

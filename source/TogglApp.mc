@@ -12,7 +12,7 @@ class TogglApp extends App.AppBase {
     // onStart() is called on application start up
     function onStart(state) {
         _timer = new Toggl.TogglTimer();
-        _manager = new Toggl.TogglManager(_timer);
+        _manager = new Toggl.TogglManager(_timer, getProperty("apiKey"));
 
         restoreTimer();
         _manager.startUpdate();
