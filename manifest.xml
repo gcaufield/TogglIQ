@@ -12,7 +12,6 @@
 
         <iq:permissions>
             <iq:uses-permission id="Communications"/>
-            <iq:uses-permission id="Sensor"/>
         </iq:permissions>
 
         <iq:languages>
