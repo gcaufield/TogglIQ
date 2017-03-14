@@ -5,6 +5,10 @@ class TogglMenu extends Ui.Menu {
     function initialize(timer) {
         Menu.initialize();
 
-        addItem("About", :about);
+        if(!timer.getWarnings().isEmpty()) {
+            addItem(Ui.loadResource(Rez.Strings.Warnings), :warnings);
+        }
+
+        addItem(Ui.loadResource(Rez.Strings.About), :about);
     }
 }
