@@ -3,6 +3,7 @@ using Toggl;
 
 class TogglMenuInputDelegate extends Ui.MenuInputDelegate {
     function initialize(manager, timer) {
+        MenuInputDelegate.initialize();
     }
 
     function onMenuItem(item) {

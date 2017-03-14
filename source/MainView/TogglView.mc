@@ -102,6 +102,9 @@ class TogglView extends Ui.View {
 
     //! Splits a string into an array of words
     hidden function splitWords(currentTask) {
+        if( currentTask == null ) {
+            return [];
+        }
         var letters = currentTask.toUtf8Array();
         var wordStart = 0;
         var wordEnd = 0;

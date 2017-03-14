@@ -4,6 +4,7 @@ using Toybox.System as Sys;
 
 class TogglAboutView extends Ui.View {
     function initialize() {
+        View.initialize();
     }
 
     function onShow() {
