@@ -9,7 +9,6 @@ class TogglMenuInputDelegate extends Ui.MenuInputDelegate {
     function onMenuItem(item) {
         if( item == :about ) {
             Ui.pushView(new TogglAboutView(), new TogglAboutViewBehaviourDelegate(), Ui.SLIDE_IMMEDIATE);
-        } else if( item == :warnings ) {
         }
     }
 }
