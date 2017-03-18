@@ -6,8 +6,19 @@ using Toybox.Lang as Lang;
 using Toybox.Time.Gregorian as Date;
 using Toybox.Timer as Timer;
 using Toybox.StringUtil as Util;
+using Toybox.Math as Math;
 
 class TogglView extends Ui.View {
+
+    const TIMER_FONT = Gfx.FONT_NUMBER_MEDIUM;
+    const TASK_FONT = Gfx.FONT_MEDIUM;
+    const TASK_NUM_LINES = 3;
+    const TASK_MARGIN = 18;
+
+    const COLORS = {
+        Toggl.TIMER_STATE_RUNNING=> Gfx.COLOR_GREEN,
+        Toggl.TIMER_STATE_STOPPED=> Gfx.COLOR_RED
+    };
 
     hidden var _timer;
     hidden var _uiUpdate;
@@ -35,23 +46,11 @@ class TogglView extends Ui.View {
     }
 
     function updateTimerState(dc) {
-        var colors = {
-            Toggl.TIMER_STATE_RUNNING=> Gfx.COLOR_GREEN,
-            Toggl.TIMER_STATE_STOPPED=> Gfx.COLOR_RED
-        };
-
         var width = dc.getWidth();
         var height = dc.getHeight();
 
         dc.setColor(Gfx.COLOR_TRANSPARENT, Gfx.COLOR_DK_GRAY);
         dc.clear();
-        if(_timer.getWarnings().isEmpty()) {
-            dc.setColor(colors[_timer.getTimerState()], Gfx.COLOR_DK_GRAY);
-        } else {
-            dc.setColor(Gfx.COLOR_ORANGE, Gfx.COLOR_DK_GRAY);
-        }
-        dc.setPenWidth(6);
-        dc.drawArc(width/2, height/2, width/2 - 3, Gfx.ARC_CLOCKWISE, 245, 295);
 
         if( _timer.getTimerState() == Toggl.TIMER_STATE_RUNNING ) {
             var duration = _timer.getTimerDuration();
@@ -59,23 +58,49 @@ class TogglView extends Ui.View {
 
             dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_DK_GRAY);
 
-            currentTask = wrapString( dc, currentTask, 20, 3 );
+            currentTask = wrapString( dc, currentTask, TASK_FONT, TASK_MARGIN, TASK_NUM_LINES );
 
-            var stringSize = dc.getTextDimensions(currentTask, Gfx.FONT_SMALL);
+            var stringSize = dc.getTextDimensions(currentTask, TASK_FONT);
 
             dc.drawText( width/2,
                 ( height / 2 ) - ( stringSize[1] / 2 ),
-                Gfx.FONT_SMALL,
+                TASK_FONT,
                 currentTask,
                 Gfx.TEXT_JUSTIFY_CENTER );
 
+            var timeString = formatAsTime( duration.value() );
+
             // Draw the Timer Label
             dc.drawText( width/2,
-                height - 33,
-                Gfx.FONT_SMALL,
-                formatAsTime( duration.value() ),
+                getTimerOffset( dc, timeString ),
+                TIMER_FONT,
+                timeString,
                 Gfx.TEXT_JUSTIFY_CENTER );
         }
+
+        drawTimerArc(dc);
+    }
+
+    hidden function drawTimerArc(dc) {
+        var width = dc.getWidth();
+        var height = dc.getHeight();
+
+        if(_timer.getWarnings().isEmpty()) {
+            dc.setColor(COLORS[_timer.getTimerState()], Gfx.COLOR_DK_GRAY);
+        } else {
+            dc.setColor(Gfx.COLOR_ORANGE, Gfx.COLOR_DK_GRAY);
+        }
+        dc.setPenWidth(12);
+        dc.drawArc(width/2, height/2, width/2 - 2, Gfx.ARC_CLOCKWISE, 230, 310);
+    }
+
+    hidden function getTimerOffset(dc, string) {
+        var r = dc.getWidth() / 2;
+        var dimensions = dc.getTextDimensions(string, TIMER_FONT);
+        var x = dimensions[0] / 2;
+        var y2 = Math.pow(r, 2) - Math.pow(x, 2);
+        var y = Math.sqrt(y2);
+        return dc.getHeight() - ( ( r - y ) + dimensions[1] );
     }
 
     function formatAsTime(seconds) {
@@ -132,7 +157,7 @@ class TogglView extends Ui.View {
         return words;
     }
 
-    hidden function wrapString(dc, currentTask, margin, maxNumLines) {
+    hidden function wrapString(dc, currentTask, font, margin, maxNumLines) {
         // We need to wrap the text if a single line does not fit on the display
         var words = splitWords( currentTask );
         var width = dc.getWidth();
@@ -147,7 +172,7 @@ class TogglView extends Ui.View {
         for( var i = 0; i < words.size(); i++ ) {
             var word = words[i];
             var tempNewLine;
-            if( dc.getTextWidthInPixels( words[i], Gfx.FONT_SMALL ) >= ( width - ( 2* margin ) ) ) {
+            if( dc.getTextWidthInPixels( words[i], font) >= ( width - ( 2* margin ) ) ) {
                 word = "...";
             }
 
@@ -159,7 +184,7 @@ class TogglView extends Ui.View {
                 tempNewLine = tempNewLine + "...";
             }
 
-            var newLineLength = dc.getTextWidthInPixels(tempNewLine, Gfx.FONT_SMALL);
+            var newLineLength = dc.getTextWidthInPixels(tempNewLine, font);
             if( newLineLength < ( width - ( 2 * margin ) ) ) {
                 // This line is okay.
                 currentLine = tempNewLine;
