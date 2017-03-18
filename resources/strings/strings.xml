@@ -6,4 +6,5 @@
     <string id="About">About</string>
     <string id="StopTimer">Stop Timer</string>
     <string id="Warnings">Warnings</string>
+    <string id="RequestFailed">Request Failed</string>
 </strings>

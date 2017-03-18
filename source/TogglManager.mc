@@ -21,6 +21,10 @@ module Toggl {
             if( responseCode == 200 ) {
                 _togglTimer.setTimer( null );
             }
+            else {
+                Sys.println( "Stop Failed: " + responseCode );
+                _togglTimer.setNotification(Toggl.TIMER_NTFCTN_REQUEST_FAILED);
+            }
 
             update();
         }

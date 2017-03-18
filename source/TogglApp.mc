@@ -4,6 +4,7 @@ using Toggl;
 class TogglApp extends App.AppBase {
     hidden var _manager;
     hidden var _timer;
+    hidden var _tickManager;
 
     function initialize() {
         AppBase.initialize();
@@ -11,7 +12,8 @@ class TogglApp extends App.AppBase {
 
     // onStart() is called on application start up
     function onStart(state) {
-        _timer = new Toggl.TogglTimer();
+        _tickManager = new TickManager(500);
+        _timer = new Toggl.TogglTimer(_tickManager);
         _manager = new Toggl.TogglManager(_timer, getProperty("apiKey"));
 
         restoreTimer();
@@ -41,7 +43,7 @@ class TogglApp extends App.AppBase {
 
     // Return the initial view of your application here
     function getInitialView() {
-        return [ new TogglView(_timer), new TogglViewBehaviourDelegate(_manager, _timer) ];
+        return [ new TogglView(_timer, _tickManager), new TogglViewBehaviourDelegate(_manager, _timer) ];
     }
 
 }

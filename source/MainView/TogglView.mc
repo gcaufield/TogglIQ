@@ -12,6 +12,8 @@ class TogglView extends Ui.View {
 
     const TIMER_FONT = Gfx.FONT_NUMBER_MEDIUM;
     const TASK_FONT = Gfx.FONT_MEDIUM;
+    const NTFCTN_FONT = Gfx.FONT_XTINY;
+    const NTFCTN_MARGIN = 6;
     const TASK_NUM_LINES = 3;
     const TASK_MARGIN = 18;
 
@@ -20,13 +22,18 @@ class TogglView extends Ui.View {
         Toggl.TIMER_STATE_STOPPED=> Gfx.COLOR_RED
     };
 
-    hidden var _timer;
-    hidden var _uiUpdate;
+    const NTFCTN_MESG = {
+        Toggl.TIMER_NTFCTN_REQUEST_FAILED=> Rez.Strings.RequestFailed
+    };
 
-    function initialize(timer) {
+    hidden var _timer;
+    hidden var _update;
+
+    function initialize(timer, tickManager) {
         View.initialize();
         _timer = timer;
-        _uiUpdate = new Timer.Timer();
+
+        tickManager.addListener( method(:onTick), 1000 );
     }
 
     // Load your resources here
@@ -37,31 +44,41 @@ class TogglView extends Ui.View {
         Ui.requestUpdate();
     }
 
+    function onTick() {
+        if( _update ) {
+            uiUpdate();
+        }
+    }
+
     // Called when this View is brought to the foreground. Restore
     // the state of this View and prepare it to be shown. This includes
     // loading resources into memory.
     function onShow() {
         Ui.requestUpdate();
-        _uiUpdate.start(method(:uiUpdate), 1000, true);
+        _update = true;
     }
 
     function updateTimerState(dc) {
-        var width = dc.getWidth();
-        var height = dc.getHeight();
-
         dc.setColor(Gfx.COLOR_TRANSPARENT, Gfx.COLOR_DK_GRAY);
         dc.clear();
 
+        drawTimerLabel( dc );
+        drawTimerArc( dc );
+        drawNotification( dc );
+    }
+
+    hidden function drawTimerLabel( dc ) {
         if( _timer.getTimerState() == Toggl.TIMER_STATE_RUNNING ) {
             var duration = _timer.getTimerDuration();
             var currentTask = _timer.getActiveTaskString();
-
-            dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_DK_GRAY);
+            var width = dc.getWidth();
+            var height = dc.getHeight();
 
             currentTask = wrapString( dc, currentTask, TASK_FONT, TASK_MARGIN, TASK_NUM_LINES );
 
             var stringSize = dc.getTextDimensions(currentTask, TASK_FONT);
 
+            dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_DK_GRAY);
             dc.drawText( width/2,
                 ( height / 2 ) - ( stringSize[1] / 2 ),
                 TASK_FONT,
@@ -78,7 +95,6 @@ class TogglView extends Ui.View {
                 Gfx.TEXT_JUSTIFY_CENTER );
         }
 
-        drawTimerArc(dc);
     }
 
     hidden function drawTimerArc(dc) {
@@ -93,6 +109,29 @@ class TogglView extends Ui.View {
 
         dc.setPenWidth(12);
         dc.drawArc(width/2, height/2, width/2 - 2, Gfx.ARC_CLOCKWISE, 230, 310);
+    }
+
+    //! Draws the notification box if there is a pending notification
+    //!
+    //! @param dc - Dc object for the current update
+    hidden function drawNotification( dc ) {
+        var notification = _timer.getNotification();
+        if( null != notification ) {
+            var width = dc.getWidth();
+            var height = 60;
+
+            dc.setColor(Gfx.COLOR_BLACK, Gfx.COLOR_DK_GRAY);
+            dc.fillRectangle( 0, 0, width, height );
+
+            var ntfctnStr = Ui.loadResource( NTFCTN_MESG.get( notification ) );
+            var ntfctnHeight = dc.getTextDimensions( ntfctnStr, NTFCTN_FONT )[1];
+            dc.setColor( Gfx.COLOR_WHITE, Gfx.COLOR_BLACK );
+            dc.drawText( width / 2,
+                height - ( ntfctnHeight + NTFCTN_MARGIN ),
+                NTFCTN_FONT,
+                ntfctnStr,
+                Gfx.TEXT_JUSTIFY_CENTER);
+        }
     }
 
     //! Finds the offset from the bottom of the screen required to display the timer string
@@ -139,7 +178,7 @@ class TogglView extends Ui.View {
     // state of this View here. This includes freeing resources from
     // memory.
     function onHide() {
-        _uiUpdate.stop();
+        _update = false;
     }
 
     //! Splits a string into an array of words
