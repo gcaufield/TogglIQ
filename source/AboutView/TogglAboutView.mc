@@ -14,8 +14,8 @@ class TogglAboutView extends Ui.View {
     function onUpdate(dc) {
         var width = dc.getWidth();
         var height = dc.getHeight();
-        var text = "TogglIQ\n" +
-            "Version - " + Ui.loadResource(Rez.Strings.Version) + "\n" +
+        var text = Ui.loadResource(Rez.Strings.AppName) + "\n" +
+             Ui.loadResource(Rez.Strings.Version) + "\n" +
              Ui.loadResource(Rez.Strings.Compatibility);
 
         var stringSize = dc.getTextDimensions(text, Gfx.FONT_SMALL);
