@@ -17,8 +17,15 @@ module Toggl {
             _updateTimer = new Timer.Timer();
         }
 
+        function onStopComplete(responseCode, data) {
+            if( responseCode == 200 ) {
+                _togglTimer.setTimer( null );
+            }
+
+            update();
+        }
+
         function onCurrentComplete(responseCode, data) {
-            Sys.println(responseCode);
             if( responseCode == 200 ) {
                 _togglTimer.clearWarning(Toggl.TIMER_WARNING_INVALID_API_KEY);
                 _togglTimer.setTimer(data["data"]);
@@ -46,6 +53,30 @@ module Toggl {
                 null,
                 options,
                 method(:onCurrentComplete));
+        }
+
+        function stopTimer() {
+            if( _togglTimer.getTimerState() != Toggl.TIMER_STATE_RUNNING ) {
+                return;
+            }
+
+            _updateTimer.stop();
+
+            var headers = {
+                "Authorization" => "Basic " + _apiKey
+            };
+
+            var options = {
+                :method=> Comms.HTTP_REQUEST_METHOD_PUT,
+                :headers=> headers,
+                :responseType=> Comms.HTTP_RESPONSE_CONTENT_TYPE_JSON
+            };
+
+            Comms.makeWebRequest(
+                "https://www.toggl.com/api/v8/time_entries/" + _togglTimer.getTimer()["id"] + "/stop",
+                null,
+                options,
+                method(:onStopComplete));
         }
 
         function setApiKey(apiKey) {

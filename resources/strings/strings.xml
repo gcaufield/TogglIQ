@@ -4,5 +4,6 @@
     <string id="Version">0.0.3</string>
     <string id="Compatibility">Toggl API v8</string>
     <string id="About">About</string>
+    <string id="StopTimer">Stop Timer</string>
     <string id="Warnings">Warnings</string>
 </strings>
