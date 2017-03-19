@@ -74,25 +74,26 @@ class TogglView extends Ui.View {
             var width = dc.getWidth();
             var height = dc.getHeight();
 
-            currentTask = wrapString( dc, currentTask, TASK_FONT, TASK_MARGIN, TASK_NUM_LINES );
-
-            var stringSize = dc.getTextDimensions(currentTask, TASK_FONT);
-
-            dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_DK_GRAY);
-            dc.drawText( width/2,
-                ( height / 2 ) - ( stringSize[1] / 2 ),
-                TASK_FONT,
-                currentTask,
-                Gfx.TEXT_JUSTIFY_CENTER );
-
             var timeString = formatAsTime( duration.value() );
 
+            dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_DK_GRAY);
             // Draw the Timer Label
             dc.drawText( width/2,
                 getTimerOffset( dc, timeString ),
                 TIMER_FONT,
                 timeString,
                 Gfx.TEXT_JUSTIFY_CENTER );
+
+            currentTask = wrapString( dc, currentTask, TASK_FONT, TASK_MARGIN, TASK_NUM_LINES );
+
+            var stringSize = dc.getTextDimensions(currentTask, TASK_FONT);
+
+            dc.drawText( width/2,
+                ( height / 2 ) - ( stringSize[1] / 2 ),
+                TASK_FONT,
+                currentTask,
+                Gfx.TEXT_JUSTIFY_CENTER );
+
         }
 
     }
