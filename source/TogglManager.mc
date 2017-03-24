@@ -2,6 +2,7 @@ using Toybox.Communications as Comms;
 using Toybox.StringUtil;
 using Toybox.System as Sys;
 using Toybox.Timer as Timer;
+using Toybox.Time as Time;
 
 module Toggl {
     class TogglManager {
@@ -57,6 +58,58 @@ module Toggl {
                 null,
                 options,
                 method(:onCurrentComplete));
+        }
+
+        //! Starts a new Timer
+        //!
+        //! @param data (Dictionary) Data Related to the new timer
+        function startTimer(data) {
+            if( _togglTimer.getTimerState() == Toggl.TIMER_STATE_RUNNING ) {
+                return;
+            }
+
+            var now = Time.now();
+            var info = Time.Gregorian.utcInfo(now, Time.Gregorian.FORMAT_SHORT);
+            var dateStr = info.year.format("%04d")
+                + "-"
+                + info.month.format("%02d")
+                + "-"
+                + info.day.format("%02d")
+                + "T"
+                + info.hour.format("%02d")
+                + ":"
+                + info.min.format("%02d")
+                + ":"
+                + info.sec.format("%02d")
+                + ".000Z";
+
+            var postData = {
+                "time_entry" => {
+                    "created_with" => "TogglIQ",
+                    //"description" => "",
+                    "duration" => "-" + now.value(),
+                    "start" => dateStr
+                }
+            };
+
+            _updateTimer.stop();
+
+            var headers = {
+                "Authorization" => "Basic " + _apiKey,
+                "Content-Type" => Comms.REQUEST_CONTENT_TYPE_JSON
+            };
+
+            var options = {
+                :method=> Comms.HTTP_REQUEST_METHOD_POST,
+                :headers=> headers,
+                :responseType=> Comms.HTTP_RESPONSE_CONTENT_TYPE_JSON
+            };
+
+            Comms.makeWebRequest(
+                "https://www.toggl.com/api/v8/time_entries",
+                postData,
+                options,
+                method(:onStopComplete));
         }
 
         function stopTimer() {
