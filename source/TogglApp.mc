@@ -5,6 +5,7 @@ class TogglApp extends App.AppBase {
     hidden var _manager;
     hidden var _timer;
     hidden var _tickManager;
+    hidden var _apiService;
 
     function initialize() {
         AppBase.initialize();
@@ -12,9 +13,10 @@ class TogglApp extends App.AppBase {
 
     // onStart() is called on application start up
     function onStart(state) {
+        _apiService = new Toggl.ApiService( );
         _tickManager = new TickManager(500);
         _timer = new Toggl.TogglTimer(_tickManager);
-        _manager = new Toggl.TogglManager(_timer, getProperty("apiKey"));
+        _manager = new Toggl.TogglManager(_timer, _apiService, getProperty("apiKey"));
 
         restoreTimer();
         _manager.startUpdate();

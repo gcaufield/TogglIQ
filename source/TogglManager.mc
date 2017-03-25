@@ -6,24 +6,29 @@ using Toybox.Time as Time;
 
 module Toggl {
     class TogglManager {
-        hidden var _apiKey;
         hidden var _state;
         hidden var _updateTimer;
+        hidden var _requestPending;
+        hidden var _apiService;
 
         hidden var _togglTimer;
 
-        function initialize(togglTimer, apiKey) {
+        function initialize(togglTimer, apiService, apiKey) {
+            _apiService = apiService;
             _togglTimer = togglTimer;
             setApiKey(apiKey);
             _updateTimer = new Timer.Timer();
+            _requestPending = false;
         }
 
-        function onStopComplete(responseCode, data) {
+        function onRequestComplete(responseCode, data) {
+            _requestPending = false;
+
             if( responseCode == 200 ) {
                 _togglTimer.setTimer( null );
             }
             else {
-                Sys.println( "Stop Failed: " + responseCode );
+                Sys.println( "Request Failed: " + responseCode );
                 _togglTimer.setNotification(Toggl.TIMER_NTFCTN_REQUEST_FAILED);
             }
 
@@ -43,106 +48,42 @@ module Toggl {
         }
 
         function update() {
-            var headers = {
-                "Authorization" => "Basic " + _apiKey
-            };
+            _apiService.getCurrent( method(:onCurrentComplete) );
+        }
 
-            var options = {
-                :method=> Comms.HTTP_REQUEST_METHOD_GET,
-                :headers=> headers,
-                :responseType=> Comms.HTTP_RESPONSE_CONTENT_TYPE_JSON
-            };
-
-            Comms.makeWebRequest(
-                "https://www.toggl.com/api/v8/time_entries/current",
-                null,
-                options,
-                method(:onCurrentComplete));
+        function setApiKey(apiKey) {
+            if(apiKey == "" || apiKey == null) {
+                _togglTimer.setWarning(Toggl.TIMER_WARNING_NO_API_KEY);
+                _apiService.setApiKey("");
+            } else {
+                _togglTimer.clearWarning(Toggl.TIMER_WARNING_NO_API_KEY);
+                _apiService.setApiKey(apiKey);
+            }
         }
 
         //! Starts a new Timer
         //!
         //! @param data (Dictionary) Data Related to the new timer
         function startTimer(data) {
-            if( _togglTimer.getTimerState() == Toggl.TIMER_STATE_RUNNING ) {
+            if( ( _togglTimer.getTimerState() == Toggl.TIMER_STATE_RUNNING ) ||
+                 _requestPending ) {
                 return;
             }
 
-            var now = Time.now();
-            var info = Time.Gregorian.utcInfo(now, Time.Gregorian.FORMAT_SHORT);
-            var dateStr = info.year.format("%04d")
-                + "-"
-                + info.month.format("%02d")
-                + "-"
-                + info.day.format("%02d")
-                + "T"
-                + info.hour.format("%02d")
-                + ":"
-                + info.min.format("%02d")
-                + ":"
-                + info.sec.format("%02d")
-                + ".000Z";
-
-            var postData = {
-                "time_entry" => {
-                    "created_with" => "TogglIQ",
-                    //"description" => "",
-                    "duration" => "-" + now.value(),
-                    "start" => dateStr
-                }
-            };
-
             _updateTimer.stop();
-
-            var headers = {
-                "Authorization" => "Basic " + _apiKey,
-                "Content-Type" => Comms.REQUEST_CONTENT_TYPE_JSON
-            };
-
-            var options = {
-                :method=> Comms.HTTP_REQUEST_METHOD_POST,
-                :headers=> headers,
-                :responseType=> Comms.HTTP_RESPONSE_CONTENT_TYPE_JSON
-            };
-
-            Comms.makeWebRequest(
-                "https://www.toggl.com/api/v8/time_entries",
-                postData,
-                options,
-                method(:onStopComplete));
+            _requestPending = true;
+            _apiService.startNewTimer( Time.now(), data, method(:onRequestComplete) );
         }
 
         function stopTimer() {
-            if( _togglTimer.getTimerState() != Toggl.TIMER_STATE_RUNNING ) {
+            if( ( _togglTimer.getTimerState() != Toggl.TIMER_STATE_RUNNING ) ||
+                _requestPending ) {
                 return;
             }
 
             _updateTimer.stop();
-
-            var headers = {
-                "Authorization" => "Basic " + _apiKey
-            };
-
-            var options = {
-                :method=> Comms.HTTP_REQUEST_METHOD_PUT,
-                :headers=> headers,
-                :responseType=> Comms.HTTP_RESPONSE_CONTENT_TYPE_JSON
-            };
-
-            Comms.makeWebRequest(
-                "https://www.toggl.com/api/v8/time_entries/" + _togglTimer.getTimer()["id"] + "/stop",
-                null,
-                options,
-                method(:onStopComplete));
-        }
-
-        function setApiKey(apiKey) {
-            if(apiKey == "" || apiKey == null) {
-                _togglTimer.setWarning(Toggl.TIMER_WARNING_NO_API_KEY);
-            } else {
-                _togglTimer.clearWarning(Toggl.TIMER_WARNING_NO_API_KEY);
-                _apiKey = StringUtil.encodeBase64(apiKey + ":api_token");
-            }
+            _requestPending = true;
+            _apiService.stopTimer( _togglTimer.getTimer()["id"], method(:onRequestComplete) );
         }
 
         //! Begins Updating the timer
