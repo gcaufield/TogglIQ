@@ -7,9 +7,13 @@ class TogglMenu extends Ui.Menu {
 
         setTitle(Ui.loadResource(Rez.Strings.AppName));
 
-        if( ( timer.getTimerState() == Toggl.TIMER_STATE_RUNNING ) &&
-            timer.getWarnings().isEmpty() ) {
-            addItem(Ui.loadResource(Rez.Strings.StopTimer), :stopTimer);
+        if( timer.getWarnings().isEmpty() ) {
+            if( timer.getTimerState() == Toggl.TIMER_STATE_RUNNING ) {
+                addItem(Ui.loadResource(Rez.Strings.StopTimer), :stopTimer);
+            }
+            else {
+                addItem(Ui.loadResource(Rez.Strings.StartTimer), :startTimer);
+            }
         }
 
         addItem(Ui.loadResource(Rez.Strings.About), :about);

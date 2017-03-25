@@ -17,6 +17,9 @@ class TogglMenuInputDelegate extends Ui.MenuInputDelegate {
         else if( item == :stopTimer ) {
             _manager.stopTimer();
         }
+        else if( item == :startTimer ) {
+            _manager.startTimer(null);
+        }
 
         return false;
     }
