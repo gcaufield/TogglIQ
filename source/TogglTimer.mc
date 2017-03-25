@@ -81,7 +81,8 @@ module Toggl {
 
         //! Retrieves the state of the Timer
         function getTimerState() {
-            if( _togglTimer != null ) {
+            if( _togglTimer != null  && ( _togglTimer["duration"] < 0 ) ) {
+                // Timer is not null and the duration is negative. Timer is running.
                 return Toggl.TIMER_STATE_RUNNING;
             }
 
