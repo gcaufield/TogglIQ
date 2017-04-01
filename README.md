@@ -8,3 +8,4 @@ Garmin ConnectIQ Widget for displaying at-a-glance information related to a user
 - Fenix5
 - Fenix5X
 - Fenix5S
+- FR935
