@@ -90,7 +90,7 @@ module Toggl {
         //! Adds a slight delay before updating, to allow for app to scroll
         function startUpdate() {
             // Request an update in 750 ms, to allow for quick scrolling without wasting data
-            _updateTimer.start(method(:update), 750, false);
+            _updateTimer.start( method(:update), 750, false );
         }
 
         //! Stops the update timer
