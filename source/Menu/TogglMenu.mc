@@ -12,7 +12,8 @@ class TogglMenu extends Ui.Menu {
                 addItem(Ui.loadResource(Rez.Strings.StopTimer), :stopTimer);
             }
             else {
-                addItem(Ui.loadResource(Rez.Strings.StartTimer), :startTimer);
+                addItem(Ui.loadResource(Rez.Strings.StartEmptyTimer), :startEmptyTimer);
+                addItem(Ui.loadResource(Rez.Strings.StartCustomTimer), :startCustomTimer);
             }
         }
 
