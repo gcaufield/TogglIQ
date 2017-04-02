@@ -1,5 +1,6 @@
 using Toybox.Communications as Comms;
 using Toybox.Time as Time;
+using Toybox.Lang as Lang;
 using Toybox.StringUtil as StringUtil;
 
 module Toggl {
@@ -31,26 +32,20 @@ class ApiService {
     //! @param data [Dictionary] (optional) Data associated with the new timer
     //! @param callback [Method] (required) Callback for the result of the request
     function startNewTimer( startMoment, data, callback ) {
-        var info = Time.Gregorian.utcInfo( startMoment, Time.Gregorian.FORMAT_SHORT );
-        var dateStr = info.year.format("%04d")
-            + "-"
-            + info.month.format("%02d")
-            + "-"
-            + info.day.format("%02d")
-            + "T"
-            + info.hour.format("%02d")
-            + ":"
-            + info.min.format("%02d")
-            + ":"
-            + info.sec.format("%02d")
-            + ".000Z";
+        var description = "";
+
+        if( data != null ) {
+            if( data.hasKey("description") ) {
+                description = data["description"];
+            }
+        }
 
         var postData = {
             "time_entry" => {
                 "created_with" => "TogglIQ",
-                //"description" => "",
+                "description" => description,
                 "duration" => "-" + startMoment.value(),
-                "start" => dateStr
+                "start" => toIso8601( startMoment )
             }
         };
 
@@ -65,6 +60,21 @@ class ApiService {
         sendRequest("time_entries/" + id + "/stop", Comms.HTTP_REQUEST_METHOD_PUT, null, callback );
     }
 
+    //! Converts a Moment to the ISO8601
+    //!
+    //! Converts a moment to the format expected by Toggl API calls
+    hidden function toIso8601( moment ) {
+        var info = Time.Gregorian.utcInfo( moment, Time.Gregorian.FORMAT_SHORT );
+        var str = Lang.format("$1$-$2$-$3$T$4$:$5$:$6$.000Z", [
+            info.year.format("%04d"),
+            info.month.format("%02d"),
+            info.day.format("%02d"),
+            info.hour.format("%02d"),
+            info.min.format("%02d"),
+            info.sec.format("%02d")]);
+        return str;
+    }
+
     //! Sends a request to the Toggl API
     //!
     //! @param endpoint [String] (required) API_ENDPOINT_* for the request
@@ -72,22 +82,22 @@ class ApiService {
     //! @param postData [Dictionary] (optional) Data to send with the request
     //! @param callback [Method] (required) Callback for the response
     hidden function sendRequest( endpoint, method, postData, callback ){
-            var headers = {
-                "Authorization" => "Basic " + _apiKey,
-                "Content-Type" => Comms.REQUEST_CONTENT_TYPE_JSON
-            };
+        var headers = {
+            "Authorization" => "Basic " + _apiKey,
+            "Content-Type" => Comms.REQUEST_CONTENT_TYPE_JSON
+        };
 
-            var options = {
-                :method=> method,
-                :headers=> headers,
-                :responseType=> Comms.HTTP_RESPONSE_CONTENT_TYPE_JSON
-            };
+        var options = {
+            :method=> method,
+            :headers=> headers,
+            :responseType=> Comms.HTTP_RESPONSE_CONTENT_TYPE_JSON
+        };
 
-            Comms.makeWebRequest(
-                "https://www.toggl.com/api/v8/" + endpoint,
-                postData,
-                options,
-                callback);
+        Comms.makeWebRequest(
+            "https://www.toggl.com/api/v8/" + endpoint,
+            postData,
+            options,
+            callback);
     }
 
 }
