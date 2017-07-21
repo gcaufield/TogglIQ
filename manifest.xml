@@ -6,6 +6,10 @@
             <iq:product id="fenix5x"/>
             <iq:product id="fenix5s"/>
             <iq:product id="fr935"/>
+            <iq:product id="fr630"/>
+            <iq:product id="fr235"/>
+            <iq:product id="fr735xt"/>
+            <iq:product id="fr230"/>
             <iq:product id="fenix3"/>
             <iq:product id="fenix3_hr"/>
             <iq:product id="fenixchronos"/>
@@ -18,6 +22,7 @@
         </iq:permissions>
 
         <iq:languages>
+            <iq:language>eng</iq:language>
         </iq:languages>
 
     </iq:application>
