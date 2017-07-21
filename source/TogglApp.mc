@@ -1,4 +1,5 @@
 using Toybox.Application as App;
+using Toybox.System as Sys;
 using Toggl;
 
 class TogglApp extends App.AppBase {
@@ -45,7 +46,13 @@ class TogglApp extends App.AppBase {
 
     // Return the initial view of your application here
     function getInitialView() {
-        return [ new TogglView(_timer, _tickManager), new TogglViewBehaviourDelegate(_manager, _timer) ];
+        var screenType = Sys.getDeviceSettings().screenShape;
+        if( Sys.SCREEN_SHAPE_SEMI_ROUND == screenType ) {
+            return [ new TogglSemiRoundView(_timer, _tickManager), new TogglViewBehaviourDelegate(_manager, _timer) ];
+        }
+        else {
+            return [ new TogglRoundView(_timer, _tickManager), new TogglViewBehaviourDelegate(_manager, _timer) ];
+            }
     }
 
 }
