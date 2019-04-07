@@ -57,7 +57,7 @@ class ApiService {
     //! @param id [Number] (required) ID of the timer to stop
     //! @param callback [Method] (required) Callback for the response
     function stopTimer( id, callback ) {
-        sendRequest("time_entries/" + id + "/stop", Comms.HTTP_REQUEST_METHOD_PUT, null, callback );
+        sendRequest("time_entries/" + id + "/stop", Comms.HTTP_REQUEST_METHOD_GET, null, callback );
     }
 
     //! Converts a Moment to the ISO8601
