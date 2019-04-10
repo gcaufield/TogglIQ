@@ -2,7 +2,7 @@ using Toybox.Timer as Tmr;
 
 //! Manages broadcasting tick events to various sources
 class TickManager {
-    hidden class TickCounter {
+    class TickCounter {
         var ticks;
         var duration;
     }
