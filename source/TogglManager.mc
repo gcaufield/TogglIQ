@@ -44,7 +44,7 @@ module Toggl {
                 _togglTimer.setWarning(Toggl.TIMER_WARNING_INVALID_API_KEY);
             }
 
-            _updateTimer.start(method(:update), 5000, false);
+            _updateTimer.start(method(:update), 2000, false);
         }
 
         function update() {
@@ -75,6 +75,7 @@ module Toggl {
             _apiService.startNewTimer( Time.now(), data, method(:onRequestComplete) );
         }
 
+        //! Stops a running timer
         function stopTimer() {
             if( ( _togglTimer.getTimerState() != Toggl.TIMER_STATE_RUNNING ) ||
                 _requestPending ) {
@@ -89,8 +90,8 @@ module Toggl {
         //! Begins Updating the timer
         //! Adds a slight delay before updating, to allow for app to scroll
         function startUpdate() {
-            // Request an update in 750 ms, to allow for quick scrolling without wasting data
-            _updateTimer.start( method(:update), 750, false );
+            // Request an update in 50 ms, to allow for quick scrolling without wasting data
+            _updateTimer.start( method(:update), 50, false );
         }
 
         //! Stops the update timer

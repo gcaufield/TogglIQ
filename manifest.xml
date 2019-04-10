@@ -24,6 +24,11 @@
             <iq:product id="fr645m"/>
             <iq:product id="fr735xt"/>
             <iq:product id="fr935"/>
+            <iq:product id="marqathlete"/>
+            <iq:product id="marqaviator"/>
+            <iq:product id="marqcaptain"/>
+            <iq:product id="marqdriver"/>
+            <iq:product id="marqexpedition"/>
         </iq:products>
         <iq:permissions>
             <iq:uses-permission id="Communications"/>
