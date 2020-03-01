@@ -25,3 +25,9 @@ Garmin ConnectIQ Widget for displaying at-a-glance information related to a user
 - FR645M
 - FR735XT
 - FR935
+- MARQ Series
+- FR945
+- FR245
+- Fenix 6
+- Fenix 6s
+- Fenix 6X
