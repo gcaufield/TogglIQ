@@ -1,5 +1,6 @@
 using Toybox.Application as App;
 using Toybox.System as Sys;
+using Toybox.Time;
 using Toggl;
 
 class TogglApp extends App.AppBase {
@@ -38,6 +39,11 @@ class TogglApp extends App.AppBase {
 
         _timer = null;
         _manager = null;
+
+        // When stopping register for a background event 30 seconds from now
+        var duration = new Time.Duration(30);
+        var eventTime = Time.now().add(duration);
+        Background.registerForTemporalEvent(eventTime);
     }
 
     function onSettingsChanged() {
@@ -55,4 +61,12 @@ class TogglApp extends App.AppBase {
             }
     }
 
+    (:minSdk("2.3.0"), :background)
+    function getServiceDelegate() {
+        return [ new Toggl.TogglBackground() ];
+    }
+
+    (:minSdk("2.3.0"))
+    function onBackgroundData(data) {
+    }
 }
