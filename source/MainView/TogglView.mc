@@ -76,7 +76,7 @@ class TogglView extends Ui.View {
 
             var timeString = formatAsTime( duration.value() );
 
-            dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_DK_GRAY);
+            dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_BLACK);
             // Draw the Timer Label
             dc.drawText( width / 2,
                 getTimerOffset( dc, timeString ),

@@ -9,6 +9,7 @@ const API_ENDPOINT_START = "time_entries";
 const API_ENDPOINT_CURRENT = "time_entries/current";
 
 //! Service Class for Interacting with the Toggl API
+(:background)
 class ApiService {
     hidden var _apiKey;
 

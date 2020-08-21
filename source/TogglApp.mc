@@ -15,13 +15,10 @@ class TogglApp extends App.AppBase {
 
     // onStart() is called on application start up
     function onStart(state) {
-        _apiService = new Toggl.ApiService( );
-        _tickManager = new TickManager(500);
-        _timer = new Toggl.TogglTimer(_tickManager);
-        _manager = new Toggl.TogglManager(_timer, _apiService, getProperty("apiKey"));
-
-        restoreTimer();
-        _manager.startUpdate();
+        Sys.println("State is " + state );
+        if( self has :InitForeground ) {
+            InitForeground();
+        }
     }
 
     function restoreTimer() {
@@ -31,8 +28,25 @@ class TogglApp extends App.AppBase {
         }
     }
 
+    function InitForeground() {
+        _apiService = new Toggl.ApiService( );
+        _tickManager = new TickManager(500);
+        _timer = new Toggl.TogglTimer(_tickManager);
+        _manager = new Toggl.TogglManager(_timer, _apiService, getProperty("apiKey"));
+
+        restoreTimer();
+        _manager.startUpdate();
+    }
+
     // onStop() is called when your application is exiting
     function onStop(state) {
+        if( self has :InitForeground ) {
+            DeinitForeground();
+        }
+
+    }
+
+    function DeinitForeground() {
         // Save the current timer
         setProperty("timer", _timer.getTimer());
         _manager.stopUpdate();
