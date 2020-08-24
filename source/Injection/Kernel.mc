@@ -1,7 +1,10 @@
 
+(:background)
 class Kernel {
 
   private var modules;
+
+  private var singletons = {};
 
   function initialize() {
     modules = new List();
@@ -12,18 +15,29 @@ class Kernel {
   }
 
   function build(interface) {
+    if(singletons[interface] != null) {
+      return singletons[interface];
+    }
+
     for( var mod = modules.getIterator(); mod != null; mod = mod.next()) {
-      if(mod.canBuild(interface)) {
-        var dependencies = mod.getDependencies(interface);
+      // Check if this module knows how to build this interfgace
+      if(mod.get().canBuild(interface)) {
+        // Get the dependencies for the interface that we are building
+        var dependencies = mod.get().getDependencies(interface);
 
         var configuredDependencies = {};
 
-        for(var dep = 0; dep < dependencies.length; dep++) {
-          configuredDependencies[dependencies[i]] = self.build(dependencies[i]);
+        // For each dependency that the interface has recurse to build it.
+        for(var dep = 0; dep < dependencies.size(); dep++) {
+          configuredDependencies[dependencies[dep]] = self.build(dependencies[dep]);
         }
 
-        mod.build(interface, configuredDependencies);
+        singletons[interface] = mod.get().build(interface, configuredDependencies);
+        return singletons[interface];
       }
     }
+
+    // Really should throw an exception here.
+    return null;
   }
 }

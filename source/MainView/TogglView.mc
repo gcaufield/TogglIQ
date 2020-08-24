@@ -59,7 +59,7 @@ class TogglView extends Ui.View {
     }
 
     function updateTimerState(dc) {
-        dc.setColor(Gfx.COLOR_TRANSPARENT, Gfx.COLOR_DK_GRAY);
+        dc.setColor(Gfx.COLOR_TRANSPARENT, Gfx.COLOR_BLACK);
         dc.clear();
 
         drawTimerLabel( dc );

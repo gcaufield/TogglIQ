@@ -2,85 +2,79 @@ using Toybox.Application as App;
 using Toybox.System as Sys;
 using Toybox.Time;
 using Toggl;
+using Toggl.Injection;
 
 class TogglApp extends App.AppBase {
-    hidden var _manager;
-    hidden var _timer;
-    hidden var _tickManager;
-    hidden var _apiService;
+  hidden var _manager;
+  hidden var _timer;
+  hidden var _tickManager;
+  hidden var _apiService;
 
-    function initialize() {
-        AppBase.initialize();
+  hidden var _kernel;
+
+  function initialize() {
+    AppBase.initialize();
+
+    _kernel = new Kernel();
+
+    // Load the components that are core to the application
+    _kernel.load(new Toggl.Injection.TogglCoreModule());
+
+    // Load the load the components related to the mode we are in based
+    // on the priority.
+    if(Toggl has :ForegroundModule) {
+      _kernel.load(new Toggl.Injection.ForegroundModule());
+    }
+  }
+
+  // onStart() is called on application start up
+  function onStart(state) {
+    _manager = _kernel.build(:TogglManager);
+    _timer = _kernel.build(:TogglTimer);
+
+    if(_timer != null) {
+      restoreTimer();
     }
 
-    // onStart() is called on application start up
-    function onStart(state) {
-        Sys.println("State is " + state );
-        if( self has :InitForeground ) {
-            InitForeground();
-        }
+    if(_manager != null) {
+      _manager.startUpdate();
+      _manager.setApiKey(getProperty("apiKey"));
+    }
+  }
+
+  function restoreTimer() {
+    var timer = getProperty("timer");
+    if(timer != null) {
+      _timer.setTimer(timer);
+    }
+  }
+
+  // onStop() is called when your application is exiting
+  function onStop(state) {
+    if(_timer != null) {
+      setProperty("timer", _timer.getTimer());
+      _timer = null;
     }
 
-    function restoreTimer() {
-        var timer = getProperty("timer");
-        if(timer != null) {
-            _timer.setTimer( timer );
-        }
+    if(_manager != null) {
+      _manager.stopUpdate();
+      _manager = null;
     }
 
-    function InitForeground() {
-        _apiService = new Toggl.ApiService( );
-        _tickManager = new TickManager(500);
-        _timer = new Toggl.TogglTimer(_tickManager);
-        _manager = new Toggl.TogglManager(_timer, _apiService, getProperty("apiKey"));
+    // When stopping register for a background event 30 seconds from now
+    //var duration = new Time.Duration(30);
+    //var eventTime = Time.now().add(duration);
+    //Background.registerForTemporalEvent(eventTime);
+  }
 
-        restoreTimer();
-        _manager.startUpdate();
+  function onSettingsChanged() {
+    if(_manager != null) {
+      _manager.setApiKey(getProperty("apiKey"));
     }
+  }
 
-    // onStop() is called when your application is exiting
-    function onStop(state) {
-        if( self has :InitForeground ) {
-            DeinitForeground();
-        }
-
-    }
-
-    function DeinitForeground() {
-        // Save the current timer
-        setProperty("timer", _timer.getTimer());
-        _manager.stopUpdate();
-
-        _timer = null;
-        _manager = null;
-
-        // When stopping register for a background event 30 seconds from now
-        var duration = new Time.Duration(30);
-        var eventTime = Time.now().add(duration);
-        Background.registerForTemporalEvent(eventTime);
-    }
-
-    function onSettingsChanged() {
-        _manager.setApiKey(getProperty("apiKey"));
-    }
-
-    // Return the initial view of your application here
-    function getInitialView() {
-        var screenType = Sys.getDeviceSettings().screenShape;
-        if( Sys.SCREEN_SHAPE_SEMI_ROUND == screenType ) {
-            return [ new TogglSemiRoundView(_timer, _tickManager), new TogglViewBehaviourDelegate(_manager, _timer) ];
-        }
-        else {
-            return [ new TogglRoundView(_timer, _tickManager), new TogglViewBehaviourDelegate(_manager, _timer) ];
-            }
-    }
-
-    (:minSdk("2.3.0"), :background)
-    function getServiceDelegate() {
-        return [ new Toggl.TogglBackground() ];
-    }
-
-    (:minSdk("2.3.0"))
-    function onBackgroundData(data) {
-    }
+  // Return the initial view of your application here
+  function getInitialView() {
+    return [ _kernel.build(:View), _kernel.build(:ViewBehaviourDelegate)];
+  }
 }

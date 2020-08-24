@@ -1,8 +1,7 @@
 
+(:background)
 class Module {
-
   private var interfaces;
-
   function initialize() {
     interfaces = {};
   }
@@ -16,7 +15,7 @@ class Module {
   }
 
   function build(interface, dependencies) {
-    interfaces[interface][:buildFunc](dependencies);
+    return method(interfaces[interface][:buildFunc]).invoke(dependencies);
   }
 
   function bind(interface, dependencies, buildFunc) {

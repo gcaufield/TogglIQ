@@ -13,10 +13,10 @@ module Toggl {
 
         hidden var _togglTimer;
 
-        function initialize(togglTimer, apiService, apiKey) {
+        function initialize(togglTimer, apiService) {
             _apiService = apiService;
             _togglTimer = togglTimer;
-            setApiKey(apiKey);
+            setApiKey( null );
             _updateTimer = new Timer.Timer();
             _requestPending = false;
         }
