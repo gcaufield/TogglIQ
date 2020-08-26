@@ -19,27 +19,6 @@ class TogglApp extends App.AppBase {
 
     // Load the components that are core to the application
     _kernel.load(new Toggl.Injection.TogglCoreModule());
-
-    // Load the load the components related to the mode we are in based
-    // on the priority.
-    if(Toggl has :ForegroundModule) {
-      _kernel.load(new Toggl.Injection.ForegroundModule());
-    }
-  }
-
-  // onStart() is called on application start up
-  function onStart(state) {
-    _manager = _kernel.build(:TogglManager);
-    _timer = _kernel.build(:TogglTimer);
-
-    if(_timer != null) {
-      restoreTimer();
-    }
-
-    if(_manager != null) {
-      _manager.startUpdate();
-      _manager.setApiKey(getProperty("apiKey"));
-    }
   }
 
   function restoreTimer() {
@@ -67,6 +46,11 @@ class TogglApp extends App.AppBase {
     //Background.registerForTemporalEvent(eventTime);
   }
 
+  function getServiceDelegate() {
+    _kernel.load(new Toggl.Injection.BackgroundModule());
+    return [ _kernel.build(:ServiceDelegate) ];
+  }
+
   function onSettingsChanged() {
     if(_manager != null) {
       _manager.setApiKey(getProperty("apiKey"));
@@ -75,6 +59,24 @@ class TogglApp extends App.AppBase {
 
   // Return the initial view of your application here
   function getInitialView() {
+    // Launching into the foreground, load the foregrond components
+    _kernel.load(new Toggl.Injection.ForegroundModule());
+
+    _manager = _kernel.build(:TogglManager);
+    _timer = _kernel.build(:TogglTimer);
+
+    _manager.setApiKey(getProperty("apiKey"));
+    restoreTimer();
+
+    if(_timer != null) {
+      restoreTimer();
+    }
+
+    if(_manager != null) {
+      _manager.startUpdate();
+      _manager.setApiKey(getProperty("apiKey"));
+    }
+
     return [ _kernel.build(:View), _kernel.build(:ViewBehaviourDelegate)];
   }
 }
