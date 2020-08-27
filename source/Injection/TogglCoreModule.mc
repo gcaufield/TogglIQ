@@ -13,6 +13,10 @@ module Injection {
     function initialize() {
       Module.initialize();
 
+      bind(:BackgroundScheduler,
+          [],
+          :buildBackgroundScheduler);
+
       bind(:SettingsService,
           [],
           :buildSettingsService);
@@ -20,6 +24,10 @@ module Injection {
       bind(:TogglApiService,
           [],
           :buildTogglApiService);
+    }
+
+    function buildBackgroundScheduler(deps) {
+      return new Toggl.Services.BackgroundScheduler();
     }
 
     function buildSettingsService(deps) {

@@ -24,7 +24,7 @@ module Toggl {
       } else {
         _apiService.setApiKey(apiKey);
 
-        update();
+        _apiService.getCurrent( method(:onCurrentComplete) );
       }
     }
 
@@ -34,10 +34,6 @@ module Toggl {
 
       // Todo Figure out how we want to pass this onto the application
       Background.exit(null);
-    }
-
-    function update() {
-      _apiService.getCurrent( method(:onCurrentComplete) );
     }
   }
 }

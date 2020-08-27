@@ -10,6 +10,7 @@ using Toybox.System as Sys;
 module Toggl {
 module Services {
 
+/// Provides access to the settings for the application
 (:background)
 class SettingsService {
   private var listeners_;
