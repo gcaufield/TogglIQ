@@ -5,14 +5,17 @@ using Toybox.Application.Storage;
 module Toggl {
   (:background)
   class BackgroundService extends System.ServiceDelegate {
-    hidden var _apiService;
+    private var _apiService;
+    private var _settingsService;
 
-    function initialize(apiService) {
+    function initialize(apiService, settingsService) {
+      ServiceDelegate.initialize();
       _apiService = apiService;
+      _settingsService = settingsService;
     }
 
     function onTemporalEvent() {
-      var apiKey = Properties.getValue("apiKey");
+      var apiKey = _settingsService.getApiToken();
 
       if(apiKey == "" || apiKey == null) {
         // No Key Has been set... no real use for trying to set things

@@ -9,6 +9,7 @@ class TogglApp extends App.AppBase {
   hidden var _timer;
   hidden var _tickManager;
   hidden var _apiService;
+  hidden var _settingsService;
 
   hidden var _kernel;
 
@@ -19,6 +20,8 @@ class TogglApp extends App.AppBase {
 
     // Load the components that are core to the application
     _kernel.load(new Toggl.Injection.TogglCoreModule());
+
+    _settingsService = _kernel.build(:SettingsService);
   }
 
   function restoreTimer() {
@@ -52,9 +55,7 @@ class TogglApp extends App.AppBase {
   }
 
   function onSettingsChanged() {
-    if(_manager != null) {
-      _manager.setApiKey(getProperty("apiKey"));
-    }
+    _settingsService.onSettingsUpdated();
   }
 
   // Return the initial view of your application here
@@ -65,16 +66,12 @@ class TogglApp extends App.AppBase {
     _manager = _kernel.build(:TogglManager);
     _timer = _kernel.build(:TogglTimer);
 
-    _manager.setApiKey(getProperty("apiKey"));
-    restoreTimer();
-
     if(_timer != null) {
       restoreTimer();
     }
 
     if(_manager != null) {
       _manager.startUpdate();
-      _manager.setApiKey(getProperty("apiKey"));
     }
 
     return [ _kernel.build(:View), _kernel.build(:ViewBehaviourDelegate)];

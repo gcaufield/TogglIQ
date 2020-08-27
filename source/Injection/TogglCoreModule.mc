@@ -13,9 +13,17 @@ module Injection {
     function initialize() {
       Module.initialize();
 
+      bind(:SettingsService,
+          [],
+          :buildSettingsService);
+
       bind(:TogglApiService,
           [],
           :buildTogglApiService);
+    }
+
+    function buildSettingsService(deps) {
+      return new Toggl.Services.SettingsService();
     }
 
     function buildTogglApiService(deps) {

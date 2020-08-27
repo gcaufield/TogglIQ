@@ -11,12 +11,12 @@ module Injection {
     function initialize() {
       Module.initialize();
       bind(:ServiceDelegate,
-          [:TogglApiService],
+          [:TogglApiService, :SettingsService],
           :buildTogglBackgroundService);
     }
 
     function buildTogglBackgroundService(deps) {
-      return new BackgroundService(deps[:TogglApiService]);
+      return new BackgroundService(deps[:TogglApiService], deps[:SettingsService]);
     }
   }
 }

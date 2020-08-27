@@ -10,13 +10,17 @@ module Toggl {
     hidden var _updateTimer;
     hidden var _requestPending;
     hidden var _apiService;
+    hidden var _settingsService;
 
     hidden var _togglTimer;
 
-    function initialize(togglTimer, apiService) {
+    function initialize(togglTimer, apiService, settingsService) {
       _apiService = apiService;
       _togglTimer = togglTimer;
-      setApiKey( null );
+      _settingsService = settingsService;
+
+      _settingsService.registerForSettingsUpdated(self);
+      setApiKey();
       _updateTimer = new Timer.Timer();
       _requestPending = false;
     }
@@ -47,11 +51,17 @@ module Toggl {
       _updateTimer.start(method(:update), 2000, false);
     }
 
+    function onSettingsUpdated() {
+      setApiKey();
+    }
+
     function update() {
       _apiService.getCurrent( method(:onCurrentComplete) );
     }
 
-    function setApiKey(apiKey) {
+    private function setApiKey() {
+      var apiKey = _settingsService.getApiToken();
+
       if(apiKey == "" || apiKey == null) {
         _togglTimer.setWarning(Toggl.TIMER_WARNING_NO_API_KEY);
         _apiService.setApiKey("");

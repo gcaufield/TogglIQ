@@ -20,7 +20,7 @@ module Injection {
           :buildTogglTimer);
 
       bind(:TogglManager,
-          [:TogglTimer, :TogglApiService],
+          [:TogglTimer, :TogglApiService, :SettingsService],
           :buildTogglManager);
 
       // Bind the View interface based on the screen shape.
@@ -43,7 +43,9 @@ module Injection {
     }
 
     function buildTogglManager(deps) {
-      return new TogglManager(deps[:TogglTimer], deps[:TogglApiService]);
+      return new TogglManager(deps[:TogglTimer],
+                              deps[:TogglApiService],
+                              deps[:SettingsService]);
     }
 
     function buildTickManager(deps) {

@@ -25,7 +25,6 @@ class List {
 
   class Element {
     var next;
-    var prev;
     var val;
 
     function initialize(){
@@ -47,7 +46,6 @@ class List {
 
     element.val = val;
     element.next = null;
-    element.prev = last;
 
     if(first == null) {
       first = element;
