@@ -10,8 +10,6 @@ using Toggl;
 using Toggl.Injection;
 
 class TogglApp extends App.AppBase {
-  hidden var _manager;
-  hidden var _timer;
   hidden var _settingsService;
   hidden var _scheduler;
 
@@ -24,30 +22,23 @@ class TogglApp extends App.AppBase {
 
     // Load the components that are core to the application
     _kernel.load(new Toggl.Injection.TogglCoreModule());
+
     _settingsService = _kernel.build(:SettingsService);
     _scheduler = _kernel.build(:BackgroundScheduler);
-  }
-
-  function restoreTimer() {
-    var timer = getProperty("timer");
-    if(timer != null) {
-      _timer.setTimer(timer);
-    }
   }
 
   // onStop() is called when your application is exiting
   function onStop(state) {
     // As we shutdown, schedule the next update event
-    _scheduler.schedule();
-
-    if(_timer != null) {
-      setProperty("timer", _timer.getTimer());
-      _timer = null;
+    if(_scheduler != null) {
+      _scheduler.schedule();
     }
+  }
 
-    if(_manager != null) {
-      _manager.stopUpdate();
-      _manager = null;
+  function onBackgroundData(data) {
+    var storageService = _kernel.build(:StorageService);
+    if(storageService != null) {
+      storageService.setTimer(data);
     }
   }
 
@@ -64,18 +55,6 @@ class TogglApp extends App.AppBase {
   function getInitialView() {
     // Launching into the foreground, load the foregrond components
     _kernel.load(new Toggl.Injection.ForegroundModule());
-
-    _manager = _kernel.build(:TogglManager);
-    _timer = _kernel.build(:TogglTimer);
-
-    if(_timer != null) {
-      restoreTimer();
-    }
-
-    if(_manager != null) {
-      _manager.startUpdate();
-    }
-
     return [ _kernel.build(:View), _kernel.build(:ViewBehaviourDelegate)];
   }
 }

@@ -4,6 +4,7 @@
 // Copyright Greg Caufield 2020
 
 using Toybox.Background;
+using Toybox.Time;
 
 module Toggl {
 module Services {

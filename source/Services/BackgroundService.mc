@@ -30,10 +30,8 @@ module Toggl {
 
     function onCurrentComplete(responseCode, data) {
       // Request completed. Store the data if the timer has changed...
-      System.println("Recived " + data);
-
-      // Todo Figure out how we want to pass this onto the application
-      Background.exit(null);
+      System.println("Received " + data);
+      Background.exit(data["data"]);
     }
   }
 }

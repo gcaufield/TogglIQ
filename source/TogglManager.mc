@@ -11,18 +11,23 @@ module Toggl {
     hidden var _requestPending;
     hidden var _apiService;
     hidden var _settingsService;
+    hidden var _storageService;
 
     hidden var _togglTimer;
 
-    function initialize(togglTimer, apiService, settingsService) {
+    function initialize(togglTimer, apiService, settingsService, storageService) {
       _apiService = apiService;
       _togglTimer = togglTimer;
       _settingsService = settingsService;
+      _storageService = storageService;
 
       _settingsService.registerForSettingsUpdated(self);
       setApiKey();
+      restoreTimer();
       _updateTimer = new Timer.Timer();
       _requestPending = false;
+
+      startUpdate();
     }
 
     function onRequestComplete(responseCode, data) {
@@ -42,6 +47,8 @@ module Toggl {
     function onCurrentComplete(responseCode, data) {
       if( responseCode == 200 ) {
         _togglTimer.clearWarning(Toggl.TIMER_WARNING_INVALID_API_KEY);
+
+        _storageService.setTimer(data["data"]);
         _togglTimer.setTimer(data["data"]);
       }
       else {
@@ -97,16 +104,25 @@ module Toggl {
       _apiService.stopTimer( _togglTimer.getTimer()["id"], method(:onRequestComplete) );
     }
 
-    //! Begins Updating the timer
-    //! Adds a slight delay before updating, to allow for app to scroll
-    function startUpdate() {
-      // Request an update in 50 ms, to allow for quick scrolling without wasting data
-      _updateTimer.start( method(:update), 50, false );
-    }
-
     //! Stops the update timer
     function stopUpdate() {
       _updateTimer.stop();
     }
+
+    private function restoreTimer() {
+      var timer = _storageService.getTimer();
+
+      if(timer != null && timer != "") {
+        _togglTimer.setTimer(timer);
+      }
+    }
+
+    //! Begins Updating the timer
+    //! Adds a slight delay before updating, to allow for app to scroll
+    private function startUpdate() {
+      // Request an update in 50 ms, to allow for quick scrolling without wasting data
+      _updateTimer.start( method(:update), 50, false );
+    }
+
   }
 }

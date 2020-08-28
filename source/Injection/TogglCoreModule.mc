@@ -2,7 +2,6 @@
 //
 // Copyright 2020 Greg Caufield
 
-
 using Toybox.System;
 
 module Toggl {
@@ -13,9 +12,11 @@ module Injection {
     function initialize() {
       Module.initialize();
 
-      bind(:BackgroundScheduler,
-          [],
-          :buildBackgroundScheduler);
+      //if( Toybox has :Background) {
+        bind(:BackgroundScheduler,
+            [],
+            :buildBackgroundScheduler);
+      //}
 
       bind(:SettingsService,
           [],

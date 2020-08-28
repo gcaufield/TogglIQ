@@ -39,7 +39,7 @@ class SettingsService {
     while(it != null) {
       var listener = it.get().get();
       if(listener != null) {
-        listener.onSettingsChanged();
+        listener.onSettingsUpdated();
       }
       it = it.next();
     }

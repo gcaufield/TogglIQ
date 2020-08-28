@@ -10,6 +10,10 @@ module Injection {
     function initialize() {
       Module.initialize();
 
+      bind(:StorageService,
+          [],
+          :buildStorageService);
+
       // Configure the modules used to drive interaction with Toggl and the UI
       bind(:TickManager,
            [],
@@ -20,7 +24,7 @@ module Injection {
           :buildTogglTimer);
 
       bind(:TogglManager,
-          [:TogglTimer, :TogglApiService, :SettingsService],
+          [:TogglTimer, :TogglApiService, :SettingsService, :StorageService],
           :buildTogglManager);
 
       // Bind the View interface based on the screen shape.
@@ -42,10 +46,15 @@ module Injection {
           :buildTogglViewBehaviourDelegate);
     }
 
+    function buildStorageService(deps){
+      return new Toggl.Services.StorageService();
+    }
+
     function buildTogglManager(deps) {
       return new TogglManager(deps[:TogglTimer],
                               deps[:TogglApiService],
-                              deps[:SettingsService]);
+                              deps[:SettingsService],
+                              deps[:StorageService]);
     }
 
     function buildTickManager(deps) {
