@@ -12,15 +12,19 @@ module Injection {
     function initialize() {
       Module.initialize();
 
-      //if( Toybox has :Background) {
+      if( Toybox.System has :ServiceDelegate) {
         bind(:BackgroundScheduler,
             [],
             :buildBackgroundScheduler);
-      //}
+      }
 
       bind(:SettingsService,
           [],
           :buildSettingsService);
+
+      bind(:StorageService,
+          [],
+          :buildStorageService);
 
       bind(:TogglApiService,
           [],
@@ -33,6 +37,10 @@ module Injection {
 
     function buildSettingsService(deps) {
       return new Toggl.Services.SettingsService();
+    }
+
+    function buildStorageService(deps){
+      return new Toggl.Services.StorageService();
     }
 
     function buildTogglApiService(deps) {
