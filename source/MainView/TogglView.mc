@@ -29,11 +29,18 @@ class TogglView extends Ui.View {
     hidden var _timer;
     hidden var _update;
 
-    function initialize(timer, tickManager) {
-        View.initialize();
-        _timer = timer;
+    //! Static Interface Dependency Retriever
+    //!
+    //! @returns Array of required interfaces
+    function getDependencies() {
+      return [:TogglTimer, :TickManager];
+    }
 
-        tickManager.addListener( method(:onTick), 1000 );
+    function initialize(deps) {
+        View.initialize();
+        _timer = deps[:TogglTimer];
+
+        deps[:TickManager].addListener( method(:onTick), 1000 );
     }
 
     // Load your resources here

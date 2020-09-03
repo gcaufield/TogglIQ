@@ -2,39 +2,19 @@
 (:background)
 class Kernel {
 
-  private var modules;
-
-  private var singletons = {};
+  private var bindings_;
 
   function initialize() {
-    modules = new List();
+    bindings_ = {};
   }
 
   function load(mod) {
-    modules.pushBack(mod);
+    mod.getBindings(self, bindings_);
   }
 
   function build(interface) {
-    if(singletons[interface] != null) {
-      return singletons[interface];
-    }
-
-    for( var mod = modules.getIterator(); mod != null; mod = mod.next()) {
-      // Check if this module knows how to build this interfgace
-      if(mod.get().canBuild(interface)) {
-        // Get the dependencies for the interface that we are building
-        var dependencies = mod.get().getDependencies(interface);
-
-        var configuredDependencies = {};
-
-        // For each dependency that the interface has recurse to build it.
-        for(var dep = 0; dep < dependencies.size(); dep++) {
-          configuredDependencies[dependencies[dep]] = self.build(dependencies[dep]);
-        }
-
-        singletons[interface] = mod.get().build(interface, configuredDependencies);
-        return singletons[interface];
-      }
+    if(bindings_[interface] != null) {
+      return bindings_[interface].build();
     }
 
     // Really should throw an exception here.

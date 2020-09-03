@@ -8,10 +8,10 @@ module Toggl {
     private var _apiService;
     private var _settingsService;
 
-    function initialize(apiService, settingsService) {
+    function initialize(deps) {
       ServiceDelegate.initialize();
-      _apiService = apiService;
-      _settingsService = settingsService;
+      _apiService = deps[:TogglApiService];
+      _settingsService = deps[:SettingsService];
     }
 
     function onTemporalEvent() {

@@ -6,20 +6,30 @@ using Toybox.Time as Time;
 
 module Toggl {
   class TogglManager {
-    hidden var _state;
-    hidden var _updateTimer;
-    hidden var _requestPending;
-    hidden var _apiService;
-    hidden var _settingsService;
-    hidden var _storageService;
+    private var _state;
+    private var _updateTimer;
+    private var _requestPending;
+    private var _apiService;
+    private var _settingsService;
+    private var _storageService;
 
     hidden var _togglTimer;
 
-    function initialize(togglTimer, apiService, settingsService, storageService) {
-      _apiService = apiService;
-      _togglTimer = togglTimer;
-      _settingsService = settingsService;
-      _storageService = storageService;
+    //! Static Interface Dependency Retriever
+    //!
+    //! @returns Array of required interfaces
+    function getDependencies() {
+      return [:TogglApiService,
+              :TogglTimer,
+              :SettingsService,
+              :StorageService];
+    }
+
+    function initialize(deps) {
+      _apiService = deps[:TogglApiService];
+      _togglTimer = deps[:TogglTimer];
+      _settingsService = deps[:SettingsService];
+      _storageService = deps[:StorageService];
 
       _settingsService.registerForSettingsUpdated(self);
       setApiKey();

@@ -1,24 +1,34 @@
+// Module.mc
+//
+// Copyright 2020 Greg Caufield
+
+using Toybox.Lang;
 
 (:background)
 class Module {
   private var interfaces;
+
   function initialize() {
     interfaces = {};
   }
 
-  function canBuild(interface) {
-    return interfaces[interface] != null;
+  function bind(interface) {
+    interfaces[interface] = new BindingSpec(interface);
+    return interfaces[interface];
   }
 
-  function getDependencies(interface) {
-    return interfaces[interface][:dependencies];
-  }
+  function getBindings(resolutionRoot, bindings) {
+    var keys = interfaces.keys();
 
-  function build(interface, dependencies) {
-    return method(interfaces[interface][:buildFunc]).invoke(dependencies);
-  }
+    // Copy all of our bindings into the new dictionary
+    for(var i = 0; i < keys.size(); i++) {
+      var spec = interfaces[keys[i]];
 
-  function bind(interface, dependencies, buildFunc) {
-    interfaces[interface] = {:dependencies => dependencies, :buildFunc => buildFunc};
+      if(spec.getScope() == BindingScopeTransient) {
+        bindings[keys[i]] = new Binding(resolutionRoot, spec);
+      } else if(spec.getScope() == BindingScopeSingleton) {
+        bindings[keys[i]] = new SingletonBinding(resolutionRoot, spec);
+      }
+    }
   }
 }

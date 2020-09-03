@@ -10,14 +10,10 @@ module Injection {
   class BackgroundModule extends Module {
     function initialize() {
       Module.initialize();
-      bind(:ServiceDelegate,
-          [:TogglApiService, :SettingsService],
-          :buildTogglBackgroundService);
+      bind(:ServiceDelegate)
+          .to(BackgroundService);
     }
 
-    function buildTogglBackgroundService(deps) {
-      return new BackgroundService(deps[:TogglApiService], deps[:SettingsService]);
-    }
   }
 }
 }

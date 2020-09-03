@@ -11,63 +11,34 @@ module Injection {
       Module.initialize();
 
       // Configure the modules used to drive interaction with Toggl and the UI
-      bind(:TickManager,
-           [],
-           :buildTickManager);
+      bind(:TickManager)
+           .to(TickManager)
+           .inSingletonScope();
 
-      bind(:TogglTimer,
-          [:TickManager],
-          :buildTogglTimer);
+      bind(:TogglTimer)
+          .to(TogglTimer)
+          .inSingletonScope();
 
-      bind(:TogglManager,
-          [:TogglTimer, :TogglApiService, :SettingsService, :StorageService],
-          :buildTogglManager);
+      bind(:TogglManager)
+          .to(TogglManager)
+          .inSingletonScope();
 
       // Bind the View interface based on the screen shape.
       var screenType = System.getDeviceSettings().screenShape;
       if( System.SCREEN_SHAPE_SEMI_ROUND == screenType ) {
-        bind(:View,
-            [:TogglTimer, :TickManager],
-            :buildToggSemiRoundView);
+        bind(:View)
+            .to(TogglSemiRoundView);
       }
       else {
-        bind(:View,
-            [:TogglTimer, :TickManager],
-            :buildTogglRoundView);
+        bind(:View)
+            .to(TogglRoundView);
        }
 
       // Bind the behaviour delegate for the view
-      bind(:ViewBehaviourDelegate,
-          [:TogglTimer, :TogglManager],
-          :buildTogglViewBehaviourDelegate);
+      bind(:ViewBehaviourDelegate)
+          .to(TogglViewBehaviourDelegate);
     }
 
-    function buildTogglManager(deps) {
-      return new TogglManager(deps[:TogglTimer],
-                              deps[:TogglApiService],
-                              deps[:SettingsService],
-                              deps[:StorageService]);
-    }
-
-    function buildTickManager(deps) {
-      return new TickManager();
-    }
-
-    function buildTogglTimer(deps) {
-      return new TogglTimer(deps[:TickManager]);
-    }
-
-    function buildTogglViewBehaviourDelegate(deps) {
-      return new TogglViewBehaviourDelegate(deps[:TogglTimer], deps[:TogglManager]);
-    }
-
-    function buildTogglRoundView(deps) {
-      return new TogglRoundView(deps[:TogglTimer], deps[:TickManager]);
-    }
-
-    function buildToggSemiRoundView(deps) {
-      return new TogglSemiRoundView(deps[:TogglTimer], deps[:TickManager]);
-    }
   }
 }
 }

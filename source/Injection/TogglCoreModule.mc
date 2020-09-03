@@ -1,8 +1,10 @@
-// ForegroundModule.mc
+// TogglCoreModule.mc
 //
 // Copyright 2020 Greg Caufield
 
 using Toybox.System;
+using Toggl;
+
 
 module Toggl {
 module Injection {
@@ -13,39 +15,24 @@ module Injection {
       Module.initialize();
 
       if( Toybox.System has :ServiceDelegate) {
-        bind(:BackgroundScheduler,
-            [],
-            :buildBackgroundScheduler);
+        bind(:BackgroundScheduler)
+          .to(Toggl.Services.BackgroundScheduler)
+          .inSingletonScope();
       }
 
-      bind(:SettingsService,
-          [],
-          :buildSettingsService);
+      bind(:SettingsService)
+          .to(Toggl.Services.SettingsService)
+          .inSingletonScope();
 
-      bind(:StorageService,
-          [],
-          :buildStorageService);
+      bind(:StorageService)
+          .to(Toggl.Services.StorageService)
+          .inSingletonScope();
 
-      bind(:TogglApiService,
-          [],
-          :buildTogglApiService);
+      bind(:TogglApiService)
+          .to(Toggl.ApiService)
+          .inSingletonScope();
     }
 
-    function buildBackgroundScheduler(deps) {
-      return new Toggl.Services.BackgroundScheduler();
-    }
-
-    function buildSettingsService(deps) {
-      return new Toggl.Services.SettingsService();
-    }
-
-    function buildStorageService(deps){
-      return new Toggl.Services.StorageService();
-    }
-
-    function buildTogglApiService(deps) {
-      return new Toggl.ApiService();
-    }
   }
 }
 }
