@@ -8,8 +8,8 @@ enum {
   BindingScopeSingleton
 }
 
+(:background)
 class BindingSpec {
-  private var mod_;
   private var interface_;
   private var classDef_;
   private var scope_;

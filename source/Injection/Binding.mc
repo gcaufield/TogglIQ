@@ -1,5 +1,10 @@
+//! Binding.mc
+//!
+//! Copyright Greg Caufield 2020
+
 using Toybox.System;
 
+(:background)
 class Binding {
   private var resolutionRoot_;
   private var classDef_;

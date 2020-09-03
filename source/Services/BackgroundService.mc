@@ -8,6 +8,10 @@ module Toggl {
     private var _apiService;
     private var _settingsService;
 
+    function getDependencies() {
+      return [:TogglApiService, :SettingsService];
+    }
+
     function initialize(deps) {
       ServiceDelegate.initialize();
       _apiService = deps[:TogglApiService];

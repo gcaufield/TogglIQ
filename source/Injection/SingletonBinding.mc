@@ -1,7 +1,8 @@
 //! SingletonBinding.mc
 //!
-//!
+//! Copyright Greg Caufield 2020
 
+(:background)
 class SingletonBinding extends Binding {
   private var instance_;
 
