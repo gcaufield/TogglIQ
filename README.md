@@ -1,4 +1,5 @@
-TogglIQ
+# TogglIQ
+
 Garmin ConnectIQ Widget for displaying at-a-glance information related to a user’s Active [Toggl](https://toggl.com/) Timer
 
 # Supported Garmin Devices
