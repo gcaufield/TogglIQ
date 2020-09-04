@@ -29,11 +29,18 @@ class TogglView extends Ui.View {
     hidden var _timer;
     hidden var _update;
 
-    function initialize(timer, tickManager) {
-        View.initialize();
-        _timer = timer;
+    //! Static Interface Dependency Retriever
+    //!
+    //! @returns Array of required interfaces
+    function getDependencies() {
+      return [:TogglTimer, :TickManager];
+    }
 
-        tickManager.addListener( method(:onTick), 1000 );
+    function initialize(deps) {
+        View.initialize();
+        _timer = deps[:TogglTimer];
+
+        deps[:TickManager].addListener( method(:onTick), 1000 );
     }
 
     // Load your resources here
@@ -59,7 +66,7 @@ class TogglView extends Ui.View {
     }
 
     function updateTimerState(dc) {
-        dc.setColor(Gfx.COLOR_TRANSPARENT, Gfx.COLOR_DK_GRAY);
+        dc.setColor(Gfx.COLOR_TRANSPARENT, Gfx.COLOR_BLACK);
         dc.clear();
 
         drawTimerLabel( dc );
@@ -76,7 +83,7 @@ class TogglView extends Ui.View {
 
             var timeString = formatAsTime( duration.value() );
 
-            dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_DK_GRAY);
+            dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_BLACK);
             // Draw the Timer Label
             dc.drawText( width / 2,
                 getTimerOffset( dc, timeString ),

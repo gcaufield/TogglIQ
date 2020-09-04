@@ -1,16 +1,20 @@
 using Toybox.WatchUi as Ui;
 
 class StartCustomTimerTextPickerDelegate extends Ui.TextPickerDelegate {
-    hidden var _manager;
+  hidden var _manager;
 
-    function initialize( manager ) {
-        TextPickerDelegate.initialize();
-        _manager = manager;
-    }
+  function getDependencies() {
+    return [:TogglManager];
+  }
 
-    function onTextEntered( text, changed ) {
-        _manager.startTimer({
-            "description" => text
+  function initialize(deps) {
+    TextPickerDelegate.initialize();
+    _manager = deps[:TogglManager];
+  }
+
+  function onTextEntered( text, changed ) {
+    _manager.startTimer({
+        "description" => text
         });
-    }
+  }
 }

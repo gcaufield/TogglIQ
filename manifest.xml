@@ -32,14 +32,17 @@
             <iq:product id="fr735xt"/>
             <iq:product id="fr935"/>
             <iq:product id="fr945"/>
+            <iq:product id="marqadventurer"/>
             <iq:product id="marqathlete"/>
             <iq:product id="marqaviator"/>
             <iq:product id="marqcaptain"/>
             <iq:product id="marqcommander"/>
             <iq:product id="marqdriver"/>
             <iq:product id="marqexpedition"/>
+            <iq:product id="marqgolfer"/>
         </iq:products>
         <iq:permissions>
+            <iq:uses-permission id="Background"/>
             <iq:uses-permission id="Communications"/>
         </iq:permissions>
         <iq:languages>

@@ -2,8 +2,14 @@ using Toybox.WatchUi as Ui;
 using Toggl;
 
 class TogglMenu extends Ui.Menu {
-    function initialize(timer) {
+    function getDependencies() {
+      return [:TogglTimer];
+    }
+
+    function initialize(deps) {
         Menu.initialize();
+
+        var timer = deps[:TogglTimer];
 
         setTitle(Ui.loadResource(Rez.Strings.AppName));
 

@@ -26,10 +26,17 @@ module Toggl {
         hidden var _ntfctn;
         hidden var _ntfctnTimer = 0;
 
-        function initialize(timerManager) {
+        //! Static Interface Dependency Retriever
+        //!
+        //! @returns Array of required interfaces
+        function getDependencies() {
+          return [:TickManager];
+        }
+
+        function initialize(deps) {
             _togglTimer = null;
             _warnings = {};
-            timerManager.addListener( method( :onTick ), 1000 );
+            deps[:TickManager].addListener( method( :onTick ), 1000 );
         }
 
         function setTimer( togglTimer ) {
