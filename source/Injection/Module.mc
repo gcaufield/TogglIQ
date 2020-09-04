@@ -28,6 +28,8 @@ class Module {
         bindings[keys[i]] = new Binding(resolutionRoot, spec);
       } else if(spec.getScope() == BindingScopeSingleton) {
         bindings[keys[i]] = new SingletonBinding(resolutionRoot, spec);
+      } else if(spec.getScope() == BindingScopeFactory) {
+        bindings[keys[i]] = new Factory(resolutionRoot);
       }
     }
   }

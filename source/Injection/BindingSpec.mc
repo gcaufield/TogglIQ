@@ -5,7 +5,8 @@ using Toybox.Lang;
 
 enum {
   BindingScopeTransient,
-  BindingScopeSingleton
+  BindingScopeSingleton,
+  BindingScopeFactory
 }
 
 (:background)
@@ -22,6 +23,11 @@ class BindingSpec {
 
   function to(classDef) {
     classDef_ = classDef;
+    return self;
+  }
+
+  function toFactory() {
+    scope_= BindingScopeFactory;
     return self;
   }
 

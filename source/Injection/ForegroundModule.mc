@@ -23,6 +23,9 @@ module Injection {
           .to(TogglManager)
           .inSingletonScope();
 
+      bind(:UiFactory)
+          .toFactory();
+
       // Bind the View interface based on the screen shape.
       var screenType = System.getDeviceSettings().screenShape;
       if( System.SCREEN_SHAPE_SEMI_ROUND == screenType ) {
@@ -37,8 +40,22 @@ module Injection {
       // Bind the behaviour delegate for the view
       bind(:ViewBehaviourDelegate)
           .to(TogglViewBehaviourDelegate);
-    }
 
+      // Bind the Menu and its delegate
+      bind(:TogglMenu)
+          .to(TogglMenu);
+      bind(:TogglMenuDelegate)
+          .to(TogglMenuInputDelegate);
+
+      // Bind the about view
+      bind(:AboutView)
+          .to(TogglAboutView);
+      bind(:AboutViewDelegate)
+          .to(TogglAboutViewBehaviourDelegate);
+
+      bind(:StartCustomTimerDelegate)
+          .to(StartCustomTimerTextPickerDelegate);
+    }
   }
 }
 }
