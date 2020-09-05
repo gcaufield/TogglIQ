@@ -11,7 +11,7 @@ using Toybox.Math as Math;
 class TogglView extends Ui.View {
 
     const TIMER_FONT = Gfx.FONT_NUMBER_MEDIUM;
-    const TASK_FONT = Gfx.FONT_MEDIUM;
+    const TASK_FONT = Gfx.FONT_SMALL;
     const NTFCTN_FONT = Gfx.FONT_XTINY;
     const NTFCTN_MARGIN = 6;
     const TASK_NUM_LINES = 3;
@@ -95,7 +95,7 @@ class TogglView extends Ui.View {
 
             var stringSize = dc.getTextDimensions(currentTask, TASK_FONT);
 
-            dc.drawText( width/2,
+            dc.drawText( width / 2,
                 ( height / 2 ) - ( stringSize[1] / 2 ),
                 TASK_FONT,
                 currentTask,

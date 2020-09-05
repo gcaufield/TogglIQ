@@ -19,5 +19,3 @@ legacyherocaptainmarvel.resourcePath    = $(base.resourcePath);resources-30px-ic
 legacyherofirstavenger.resourcePath     = $(base.resourcePath);resources-30px-icon
 legacysagadarthvader.resourcePath       = $(base.resourcePath);resources-30px-icon
 legacysagarey.resourcePath              = $(base.resourcePath);resources-30px-icon
-
-
