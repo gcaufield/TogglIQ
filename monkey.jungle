@@ -1,2 +1,23 @@
 project.manifest = manifest.xml
 
+# Load the Icon Paths
+fenix5s.resourcePath                    = $(base.resourcePath);resources-36px-icon
+fenixchronos.resourcePath               = $(base.resourcePath);resources-36px-icon
+
+approachs60.resourcePath                = $(base.resourcePath);resources-30px-icon
+approachs62.resourcePath                = $(base.resourcePath);resources-35px-icon
+
+vivoactive3.resourcePath                = $(base.resourcePath);resources-30px-icon
+vivoactive3d.resourcePath               = $(base.resourcePath);resources-30px-icon
+vivoactive3m.resourcePath               = $(base.resourcePath);resources-30px-icon
+vivoactive3mlte.resourcePath            = $(base.resourcePath);resources-30px-icon
+
+vivoactive4s.resourcePath               = $(base.resourcePath);resources-30px-icon
+vivoactive4.resourcePath                = $(base.resourcePath);resources-35px-icon
+
+legacyherocaptainmarvel.resourcePath    = $(base.resourcePath);resources-30px-icon
+legacyherofirstavenger.resourcePath     = $(base.resourcePath);resources-30px-icon
+legacysagadarthvader.resourcePath       = $(base.resourcePath);resources-30px-icon
+legacysagarey.resourcePath              = $(base.resourcePath);resources-30px-icon
+
+
