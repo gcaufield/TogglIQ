@@ -10,8 +10,7 @@ using Toybox.Math as Math;
 
 class TogglView extends Ui.View {
 
-    const TIMER_FONT = Gfx.FONT_NUMBER_MEDIUM;
-    const TASK_FONT = Gfx.FONT_SMALL;
+    const TASK_FONT = Gfx.FONT_MEDIUM;
     const NTFCTN_FONT = Gfx.FONT_XTINY;
     const NTFCTN_MARGIN = 6;
     const TASK_NUM_LINES = 3;
@@ -28,6 +27,7 @@ class TogglView extends Ui.View {
 
     hidden var _timer;
     hidden var _update;
+    hidden var _timerFont;
 
     //! Static Interface Dependency Retriever
     //!
@@ -45,6 +45,14 @@ class TogglView extends Ui.View {
 
     // Load your resources here
     function onLayout(dc) {
+      var minFontOffset= dc.getHeight() - (dc.getHeight() * .35);
+
+      _timerFont = Gfx.FONT_NUMBER_MEDIUM;
+      var offset = getTimerOffset(dc, "00:00:00");
+
+      if( offset < minFontOffset) {
+        _timerFont = Gfx.FONT_NUMBER_MILD;
+      }
     }
 
     function uiUpdate() {
@@ -87,7 +95,7 @@ class TogglView extends Ui.View {
             // Draw the Timer Label
             dc.drawText( width / 2,
                 getTimerOffset( dc, timeString ),
-                TIMER_FONT,
+                _timerFont,
                 timeString,
                 Gfx.TEXT_JUSTIFY_CENTER );
 
@@ -107,6 +115,7 @@ class TogglView extends Ui.View {
     hidden function drawTimerArc(dc) {
         var width = dc.getWidth();
         var height = dc.getHeight();
+        var arcAngles = getTimerArc(dc);
 
         if(_timer.getWarnings().isEmpty()) {
             dc.setColor(COLORS[_timer.getTimerState()], Gfx.COLOR_DK_GRAY);
@@ -115,7 +124,7 @@ class TogglView extends Ui.View {
         }
 
         dc.setPenWidth(12);
-        dc.drawArc(width/2, height/2, width/2 - 2, Gfx.ARC_CLOCKWISE, 230, 310);
+        dc.drawArc(width/2, height/2, width/2 - 2, Gfx.ARC_CLOCKWISE, arcAngles[0], arcAngles[1]);
     }
 
     //! Draws the notification box if there is a pending notification
