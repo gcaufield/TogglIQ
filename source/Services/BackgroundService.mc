@@ -35,7 +35,13 @@ module Toggl {
     function onCurrentComplete(responseCode, data) {
       // Request completed. Store the data if the timer has changed...
       System.println("Received " + data);
-      Background.exit(data["data"]);
+      if(responseCode == 200) {
+        Background.exit(data["data"]);
+      }
+      else {
+        // Exit without passing, any data.
+        System.exit();
+      }
     }
   }
 }

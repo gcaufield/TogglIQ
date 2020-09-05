@@ -48,6 +48,11 @@ class TogglApp extends App.AppBase {
 
   function getServiceDelegate() {
     _kernel.load(new Toggl.Injection.BackgroundModule());
+
+    // Incase we are killed before we complete. Schedule the next event as we
+    // start up
+    _scheduler.schedule();
+
     return [ _kernel.build(:ServiceDelegate) ];
   }
 
