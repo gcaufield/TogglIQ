@@ -1,0 +1,51 @@
+@startuml
+
+title TogglIQ UI Control
+
+class MainViewBehaviorDelegate
+class AboutViewBehaviorDelegate
+class MenuBehaviorDelegate
+
+interface IInterfaceController {
+    + void pushMenu()
+    + void pushAbout()
+    + void pop()
+    + Array getInitialView()
+}
+
+class InterfaceController {
+    - IInterfaceFactory factory_
+}
+
+interface IInterfaceFactory {
+    + void getViewDelegatePair(ViewKey key)
+}
+
+enum ViewKey {
+    Main,
+    About,
+    Menu
+}
+
+interface IFactory {
+    + void bind(WeakReference kernel)
+}
+
+class InterfaceFactory
+
+class Kernel
+
+MainViewBehaviorDelegate --* IInterfaceController
+AboutViewBehaviorDelegate --* IInterfaceController
+MenuBehaviorDelegate --* IInterfaceController
+IInterfaceController <|-- InterfaceController
+
+InterfaceController --* IInterfaceFactory
+IInterfaceFactory - ViewKey
+
+IInterfaceFactory <|-- InterfaceFactory
+InterfaceFactory --|> IFactory
+
+InterfaceFactory -* Kernel
+
+@enduml

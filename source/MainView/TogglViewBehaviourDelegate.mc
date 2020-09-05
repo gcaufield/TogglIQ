@@ -2,20 +2,29 @@ using Toybox.WatchUi as Ui;
 using Toybox.System as Sys;
 
 class TogglViewBehaviourDelegate extends Ui.BehaviorDelegate {
-    hidden var _manager;
-    hidden var _timer;
+  private var _manager;
+  private var _timer;
+  private var _uiFactory;
 
-    function initialize(manager, timer) {
-        BehaviorDelegate.initialize();
+  //! Static Interface Dependency Retriever
+  //!
+  //! @returns Array of required interfaces
+  function getDependencies() {
+    return [:TogglManager, :TogglTimer, :UiFactory];
+  }
 
-        _manager = manager;
-        _timer = timer;
-    }
+  function initialize(deps) {
+    BehaviorDelegate.initialize();
 
-    function onSelect() {
-        // Show the Menu
-        Ui.pushView(new TogglMenu(_timer), new TogglMenuInputDelegate(_manager, _timer), Ui.SLIDE_RIGHT);
+    _manager = deps[:TogglManager];
+    _timer = deps[:TogglTimer];
+    _uiFactory = deps[:UiFactory];
+  }
 
-        return true;
-    }
+  function onSelect() {
+    // Show the Menu
+    Ui.pushView(_uiFactory.get(:TogglMenu), _uiFactory.get(:TogglMenuDelegate), Ui.SLIDE_RIGHT);
+
+    return true;
+  }
 }

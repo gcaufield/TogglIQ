@@ -1,30 +1,65 @@
+using Toybox.System;
+using Toybox.Graphics;
+using Toybox.Math;
+
 class TogglRoundView extends TogglView {
-    function initialize(timer, tickManager) {
-        TogglView.initialize(timer, tickManager);
-    }
+  function getDependencies() {
+    return TogglView.getDependencies();
+  }
 
-    //! Finds the offset from the bottom of the screen required to display the timer string
-    //!
-    //! @param dc - Dc object for the current update
-    //! @param string - String to display
-    hidden function getTimerOffset(dc, string) {
-        // Get the radius of the display
-        var r = dc.getWidth() / 2;
+  function initialize(deps) {
+    TogglView.initialize(deps);
+  }
 
-        // Get the height and width of the string
-        var dimensions = dc.getTextDimensions(string, TIMER_FONT);
+  //! Finds the offset from the bottom of the screen required to display the timer string
+  //!
+  //! @param dc - Dc object for the current update
+  //! @param string - String to display
+  hidden function getTimerOffset(dc, string) {
+    // Get the radius of the display
+    var r = dc.getWidth() / 2;
 
-        // Use the chord that is made by the timer string
-        var x = dimensions[0] / 2;
+    // Get the height and width of the string
+    var dimensions = dc.getTextDimensions(string, _timerFont);
 
-        // Find the distance from the chord to the center of the circle using Pathgoreans
-        // (and they said we wouldn't need it after high school)
-        var y = Math.pow(r, 2) - Math.pow(x, 2);
-        y = Math.sqrt(y);
+    // Use the chord that is made by the timer string
+    var x = dimensions[0] / 2;
 
-        // Calculate the required Y offset by finding the distance from the bottom of the
-        // display to the chord and add the height of the string because we want the bottom
-        // of the string to sit on the chord
-        return dc.getHeight() - ( ( r - y ) + dimensions[1] );
-    }
+    // Find the distance from the chord to the center of the circle using Pathgoreans
+    // (and they said we wouldn't need it after high school)
+    var y = Math.pow(r, 2) - Math.pow(x, 2);
+    y = Math.sqrt(y);
+
+    // Calculate the required Y offset by finding the distance from the bottom of the
+    // display to the chord and add the height of the string because we want the bottom
+    // of the string to sit on the chord
+    //return dc.getHeight() - ( ( r - y ) + dimensions[1] );
+    return dc.getHeight() - ( ( r - y ) + Graphics.getFontAscent(_timerFont) );
+  }
+
+  protected function getTimerArc(dc) {
+    // Get the radius of the display
+    var r = dc.getWidth() / 2.0d;
+
+    // Get the height and width of the string
+    var dimensions = dc.getTextDimensions("00:00:00", _timerFont);
+
+    // Use the chord that is made by the timer string
+    var x = dimensions[0] / 2.0d;
+
+    // Find the distance from the chord to the center of the circle using Pathgoreans
+    // (and they said we wouldn't need it after high school)
+    var y = Math.pow(r, 2) - Math.pow(x, 2);
+    y = Math.sqrt(y);
+
+    // Shorten y by 1/2 of the font ascent so that we can find the angle to
+    // chord that runs through the middle of the timer label.
+    y = y - (Graphics.getFontAscent(_timerFont) / 2);
+
+    // Find the angle
+    var ang = Math.acos(y / r);
+    ang = (180.0d / Math.PI) * ang;
+
+    return [270.0d - ang, 270.0d + ang];
+  }
 }
