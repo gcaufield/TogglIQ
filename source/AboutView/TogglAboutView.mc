@@ -23,7 +23,7 @@ class TogglAboutView extends Ui.View {
         dc.setColor(Gfx.COLOR_TRANSPARENT, Gfx.COLOR_BLACK);
         dc.clear();
 
-        dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_DK_GRAY);
+        dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_BLACK);
         dc.drawText( width/2,
             ( height / 2 ) - ( stringSize[1] / 2 ),
             Gfx.FONT_SMALL,
