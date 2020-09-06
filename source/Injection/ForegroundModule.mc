@@ -26,11 +26,9 @@ module Injection {
       bind(:UiFactory)
           .toFactory();
 
-      bind(:RecentTimersModel)
-          .to(Models.RecentTimersModel);
-
       bind(:RecentTimerManager)
-          .to(Managers.RecentTimerManager);
+          .to(Managers.RecentTimerManager)
+          .inSingletonScope();
 
       // Bind the View interface based on the screen shape.
       var screenType = System.getDeviceSettings().screenShape;
@@ -64,6 +62,12 @@ module Injection {
 
       bind(:StartCustomTimerDelegate)
           .to(StartCustomTimerTextPickerDelegate);
+
+      bind(:RecentTimerView)
+          .to(Views.RecentTimerMenu);
+
+      bind(:RecentTimerDelegate)
+          .to(Delegates.RecentTimerMenuDelegate);
     }
   }
 }
