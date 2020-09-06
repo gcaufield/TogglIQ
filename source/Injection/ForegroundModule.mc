@@ -26,6 +26,12 @@ module Injection {
       bind(:UiFactory)
           .toFactory();
 
+      bind(:RecentTimersModel)
+          .to(Models.RecentTimersModel);
+
+      bind(:RecentTimerManager)
+          .to(Managers.RecentTimerManager);
+
       // Bind the View interface based on the screen shape.
       var screenType = System.getDeviceSettings().screenShape;
       if( System.SCREEN_SHAPE_SEMI_ROUND == screenType ) {
@@ -36,6 +42,9 @@ module Injection {
         bind(:View)
             .to(TogglRoundView);
        }
+
+      bind (:ProgressDelegate)
+          .to(Delegates.ProgressDelegate);
 
       // Bind the behaviour delegate for the view
       bind(:ViewBehaviourDelegate)
