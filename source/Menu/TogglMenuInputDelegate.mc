@@ -37,6 +37,7 @@ class TogglMenuInputDelegate extends Ui.MenuInputDelegate {
                   Ui.SLIDE_DOWN);
     }
     else if( item == :startRecentTimer ) {
+      Ui.popView( Ui.SLIDE_IMMEDIATE );
       _recentTimerManager.show();
     }
 

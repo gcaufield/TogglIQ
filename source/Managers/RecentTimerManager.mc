@@ -17,7 +17,7 @@ module Managers {
     }
 
     function equals(other) {
-      return (_description != other._description);
+      return (_description == other.getDescription());
     }
 
     function getDescription() {
@@ -25,11 +25,11 @@ module Managers {
     }
 
     function getShortDescription() {
-      if(_description.length() < 11) {
+      if(_description.length() < 20) {
         return _description;
       }
       else {
-        return _description.substring(0,8) + "...";
+        return _description.substring(0,19) + "...";
       }
     }
 
@@ -91,10 +91,6 @@ module Managers {
       return _items;
     }
 
-    public function startTimer(item) {
-      System.println(item.getDescription() + " selected");
-    }
-
     function onRequestComplete(responseCode, data) {
       _requestInProgress = false;
 
@@ -111,6 +107,10 @@ module Managers {
         _items.clear();
         for(var i = 0; i < data.size(); i++) {
           var item = new TimerData(data[i]);
+          if(item.getDescription() == null) {
+            continue;
+          }
+
           if(!_items.contains(item)) {
             _items.pushBack(item);
           }

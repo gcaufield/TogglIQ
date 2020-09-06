@@ -7,20 +7,25 @@ using Toybox.WatchUi;
 module Toggl {
 module Delegates {
   class RecentTimerMenuDelegate extends WatchUi.Menu2InputDelegate{
-    private var _recentTimerManager;
+    private var _togglManager;
 
     public function getDependencies() {
-      return [:RecentTimerManager];
+      return [:TogglManager];
     }
 
-    public function intialize(deps) {
+    public function initialize(deps) {
       Menu2InputDelegate.initialize();
 
-      _recentTimerManager = deps[:RecentTimerManager];
+      _togglManager = deps[:TogglManager];
     }
 
     public function onSelect(item) {
-      _recentTimerManager.startTimer(item.getId());
+      _togglManager.startTimer({
+          "description" => item.getId().getDescription()
+          });
+
+      WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
+      return true;
     }
   }
 }
