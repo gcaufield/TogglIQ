@@ -50,14 +50,27 @@ module Toggl {
           }
         };
 
+        if(data != null && data.hasKey("pid")) {
+          postData["time_entry"]["pid"] = data["pid"];
+        }
+
         sendApiRequest( Toggl.API_ENDPOINT_START, Comms.HTTP_REQUEST_METHOD_POST, postData, callback );
       }
 
       //! Receive all of the timers that have been started in the last 9 days
       //!
+      //! @param startMoment [Moment] (required) the start of the time window to
+      //!   retrieve
       //! @param callback [Method] (required) Callback for the response
-      function getRecentTimers(callback) {
-        sendApiRequest("time_entries", Comms.HTTP_REQUEST_METHOD_GET, null, callback );
+      function getTimers(startMoment, endMoment, callback) {
+        var paramsStr = "start_date=" + Comms.encodeURL(toIso8601(startMoment));
+        if(endMoment != null ) {
+          paramsStr = paramsStr + "&end_date=" + Comms.encodeURL(toIso8601(endMoment));
+        }
+
+        System.println(paramsStr);
+
+        sendApiRequest("time_entries?" + paramsStr, Comms.HTTP_REQUEST_METHOD_GET, null, callback );
       }
 
       //! Stops an active timer

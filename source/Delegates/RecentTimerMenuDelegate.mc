@@ -21,7 +21,8 @@ module Delegates {
 
     public function onSelect(item) {
       _togglManager.startTimer({
-          "description" => item.getId().getDescription()
+          "description" => item.getId().getDescription(),
+          "pid" => item.getId().getProjectId()
           });
 
       WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
