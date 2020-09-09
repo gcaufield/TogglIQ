@@ -11,6 +11,7 @@ module Toggl {
 module Services {
 
 /// Provides access to the settings for the application
+(:glance)
 class StorageService {
   function initialize() {
   }
