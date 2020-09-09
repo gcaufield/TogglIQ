@@ -10,8 +10,8 @@ module Toggl {
 module Managers {
 
   class TimerData {
-    private var _description;
-    private var _pid;
+    protected var _description;
+    protected var _pid;
 
     function initialize(data) {
       _description = data["description"];
@@ -19,7 +19,9 @@ module Managers {
     }
 
     function equals(other) {
-      return (_description == other.getDescription());
+      System.println( _description + " " + other._description);
+
+      return (_description.equals(other._description));
     }
 
     function getDescription() {
@@ -54,16 +56,19 @@ module Managers {
     private var _requestInProgress;
     private var _lastEnd;
     private var _requestWindow;
+    private var _tickManager;
 
     private var _items;
 
     public function getDependencies() {
-      return [:UiFactory, :TogglApiService];
+      return [:UiFactory, :TogglApiService, :TickManager];
     }
 
     public function initialize(deps) {
       _uiFactory = deps[:UiFactory];
       _apiService = deps[:TogglApiService];
+      _tickManager = deps[:TickManager];
+      System.println(_tickManager);
       _items = new List();
 
       _requestInProgress = false;
@@ -137,7 +142,7 @@ module Managers {
             // Move the last end back and start a new request, attempt a linear
             // expansion to reduce the number of timers
             _lastEnd = _lastEnd.subtract(new Time.Duration(_requestWindow));
-            _requestWindow += (24 * 3600);
+            _requestWindow += (48 * 3600);
             startRequest();
           } else {
             // We have enough elements
@@ -149,6 +154,12 @@ module Managers {
           }
           break;
 
+        case Communications.INVALID_HTTP_BODY_IN_NETWORK_RESPONSE:
+        case 429:
+          // Rate Limited, try again...
+          _tickManager.delay(method(:startRequest), 500);
+          break;
+
         case Communications.NETWORK_RESPONSE_OUT_OF_MEMORY:
         case Communications.NETWORK_RESPONSE_TOO_LARGE:
           // Looks like the request window we tried to use has too many things
@@ -158,18 +169,17 @@ module Managers {
           break;
 
         default:
-          System.println( "Request Failed: " + responseCode );
           WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
           break;
       }
     }
 
-    private function startRequest() {
-        _requestInProgress = true;
-        _apiService.getTimers(
-            _lastEnd.subtract(new Time.Duration(_requestWindow)),
-            _lastEnd,
-            method(:onRequestComplete));
+    function startRequest() {
+      _requestInProgress = true;
+      _apiService.getTimers(
+          _lastEnd.subtract(new Time.Duration(_requestWindow)),
+          _lastEnd,
+          method(:onRequestComplete));
     }
   }
 }
