@@ -152,8 +152,7 @@ module Managers {
         case Communications.NETWORK_RESPONSE_OUT_OF_MEMORY:
         case Communications.NETWORK_RESPONSE_TOO_LARGE:
           // Looks like the request window we tried to use has too many things
-          // in it... Perform an exponetial back off and try again.
-          System.println("Response was too big reducing window");
+          // in it... Perform an exponential back off and try again.
           _requestWindow = _requestWindow / 2;
           startRequest();
           break;

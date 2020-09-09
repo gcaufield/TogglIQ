@@ -68,8 +68,6 @@ module Toggl {
           paramsStr = paramsStr + "&end_date=" + Comms.encodeURL(toIso8601(endMoment));
         }
 
-        System.println(paramsStr);
-
         sendApiRequest("time_entries?" + paramsStr, Comms.HTTP_REQUEST_METHOD_GET, null, callback );
       }
 
