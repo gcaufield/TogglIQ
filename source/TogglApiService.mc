@@ -118,7 +118,7 @@ module Toggl {
         };
 
         Comms.makeWebRequest(
-            "https://www.toggl.com/" + api + endpoint,
+            "https://api.track.toggl.com/" + api + endpoint,
             postData,
             options,
             callback);
