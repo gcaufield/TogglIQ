@@ -19,8 +19,6 @@ module Managers {
     }
 
     function equals(other) {
-      System.println( _description + " " + other._description);
-
       return (_description.equals(other._description));
     }
 
@@ -68,7 +66,6 @@ module Managers {
       _uiFactory = deps[:UiFactory];
       _apiService = deps[:TogglApiService];
       _tickManager = deps[:TickManager];
-      System.println(_tickManager);
       _items = new List();
 
       _requestInProgress = false;
@@ -100,7 +97,6 @@ module Managers {
     }
 
     public function cancel() {
-      System.println("Cancel");
       _cancelled = true;
     }
 

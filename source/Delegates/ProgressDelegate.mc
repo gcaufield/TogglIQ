@@ -18,7 +18,6 @@ module Delegates {
     }
 
     public function onBack() {
-      System.println("On Back");
       var cancellable = _cancellable.get();
 
       if(cancellable != null) {
