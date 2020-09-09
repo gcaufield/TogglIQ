@@ -13,7 +13,7 @@ module Views {
     }
 
     public function initialize(deps) {
-      Menu2.initialize(null);
+      Menu2.initialize({:title => WatchUi.loadResource(Rez.Strings.StartRecentTimer)});
 
       var items = deps[:RecentTimerManager].getRecentTimers();
 
