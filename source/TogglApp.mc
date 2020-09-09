@@ -9,6 +9,7 @@ using Toybox.Time;
 using Toggl;
 using Toggl.Injection;
 
+(:background, :glance)
 class TogglApp extends App.AppBase {
   hidden var _settingsService;
   hidden var _scheduler;

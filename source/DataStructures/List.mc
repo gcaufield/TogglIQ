@@ -36,12 +36,26 @@ class List {
   private var length;
 
   function initialize() {
+    clear();
+  }
+
+  function clear() {
     first = null;
     last = null;
     length = 0;
   }
 
-  function pushBack( val ) {
+  function contains(element) {
+    for(var it = getIterator(); it != null; it = it.next()) {
+      if(it.get().equals(element)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  function pushBack(val) {
     var element = new Element();
 
     element.val = val;
@@ -56,6 +70,10 @@ class List {
     }
 
     length++;
+  }
+
+  function size() {
+    return length;
   }
 
   function getIterator() {

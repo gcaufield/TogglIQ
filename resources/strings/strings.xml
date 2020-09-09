@@ -5,6 +5,7 @@
     <string id="Compatibility">Toggl API v8</string>
     <string id="About">About</string>
     <string id="StopTimer">Stop Timer</string>
+    <string id="StartRecentTimer">Start Recent</string>
     <string id="StartEmptyTimer">Start Empty</string>
     <string id="StartCustomTimer">Start Custom</string>
     <string id="Warnings">Warnings</string>
