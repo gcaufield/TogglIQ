@@ -144,9 +144,12 @@ module Managers {
             // We have enough elements
             // Pop the progress spinner, and show the list.
             WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
-            WatchUi.pushView( _uiFactory.get(:RecentTimerView),
-                _uiFactory.get(:RecentTimerDelegate),
-                WatchUi.SLIDE_IMMEDIATE);
+
+            if(_items.size() > 0) {
+              WatchUi.pushView( _uiFactory.get(:RecentTimerView),
+                  _uiFactory.get(:RecentTimerDelegate),
+                  WatchUi.SLIDE_IMMEDIATE);
+            }
           }
           break;
 
