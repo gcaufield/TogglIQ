@@ -1,7 +1,9 @@
 #!/bin/bash
 # travis.sh script to
 
-SDK_URL="https://developer.garmin.com/downloads/connect-iq/sdks/connectiq-sdk-lin-3.2.2-2020-08-28-a50584d55.zip"
+SDK_BASE_URL="https://developer.garmin.com/downloads/connect-iq/sdks"
+SDK="connectiq-sdk-lin-3.1.9-2020-06-24-1cc9d3a70.zip"
+SDK_URL="$SDK_BASE_URL/$SDK"
 SDK_FILE="sdk.zip"
 SDK_DIR="sdk"
 
