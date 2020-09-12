@@ -10,6 +10,7 @@ module Delegates {
     private var _cancellable;
 
     public function initialize() {
+      BehaviorDelegate.initialize();
       _cancellable = null;
     }
 

@@ -1,0 +1,3 @@
+MonkeyInject = barrels\MonkeyInject-v0.1.1-0-g972f3b3.barrel
+base.barrelPath = $(base.barrelPath);$(MonkeyInject)
+

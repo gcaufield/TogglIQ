@@ -3,10 +3,11 @@
 // Copyright 2020 Greg Caufield
 
 using Toybox.System;
+using MonkeyInject;
 
 module Toggl {
 module Injection {
-  class ForegroundModule extends Module {
+  class ForegroundModule extends MonkeyInject.Module {
     function initialize() {
       Module.initialize();
 

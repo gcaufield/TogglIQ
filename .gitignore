@@ -1,3 +1,7 @@
 export/
 bin/
 .DS_Store
+*.iq
+*.prg
+*.prg.debug.xml
+*-settings.json

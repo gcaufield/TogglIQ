@@ -67,7 +67,7 @@ fi
 # defaults & config
 # *****************
 
-JUNGLE_FILES="${PROJECT_HOME}/monkey.jungle"
+JUNGLE_FILES=("${PROJECT_HOME}/monkey.jungle" "${PROJECT_HOME}/barrels.jungle")
 MANIFEST_FILE="${PROJECT_HOME}/manifest.xml"
 CONFIG_FILE="${PROJECT_HOME}/mb_runner.cfg"
 
@@ -153,7 +153,9 @@ function params_for_build
         PARAMS+="--rez \"${RESOURCES}\" "
         PARAMS+="${SOURCES} "
     else
-        PARAMS+="--jungles \"${JUNGLE_FILES}\" "
+      JUNGLES=$(printf "%s;" "${JUNGLE_FILES[@]}")
+      JUNGLES=${JUNGLES::-1}
+      PARAMS+="--jungles $JUNGLES"
     fi
 }
 
@@ -171,7 +173,9 @@ function params_for_package
         PARAMS+="--rez \"${RESOURCES}\" "
         PARAMS+="${SOURCES} "
     else
-        PARAMS+="--jungles \"${JUNGLE_FILES}\" "
+      JUNGLES=$(printf "%s;" "${JUNGLE_FILES[@]}")
+      JUNGLES=${JUNGLES::-1}
+      PARAMS+="--jungles $JUNGLES"
     fi
 }
 

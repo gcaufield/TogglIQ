@@ -8,6 +8,7 @@ using Toybox.System as Sys;
 using Toybox.Time;
 using Toggl;
 using Toggl.Injection;
+using MonkeyInject;
 
 (:background, :glance)
 class TogglApp extends App.AppBase {
@@ -19,7 +20,7 @@ class TogglApp extends App.AppBase {
   function initialize() {
     AppBase.initialize();
 
-    _kernel = new Kernel();
+    _kernel = new MonkeyInject.Kernel();
 
     // Load the components that are core to the application
     _kernel.load(new Toggl.Injection.TogglCoreModule());

@@ -19,7 +19,7 @@ module Views {
 
       // For each item in items, add a menu item for it.
       for(var it = items.getIterator(); it != null; it = it.next()) {
-        addItem(new MenuItem(
+        addItem(new WatchUi.MenuItem(
               it.get().getShortDescription(),
               "",
               it.get(),

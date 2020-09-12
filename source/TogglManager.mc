@@ -32,7 +32,7 @@ module Toggl {
       _storageService = deps[:StorageService];
 
       _settingsService.registerForSettingsUpdated(self);
-      setApiKey();
+      updateApiToken();
       restoreTimer();
       _updateTimer = new Timer.Timer();
       _requestPending = false;
@@ -69,14 +69,14 @@ module Toggl {
     }
 
     function onSettingsUpdated() {
-      setApiKey();
+      updateApiToken();
     }
 
     function update() {
       _apiService.getCurrent( method(:onCurrentComplete) );
     }
 
-    private function setApiKey() {
+    private function updateApiToken() {
       var apiKey = _settingsService.getApiToken();
 
       if(apiKey == "" || apiKey == null) {
