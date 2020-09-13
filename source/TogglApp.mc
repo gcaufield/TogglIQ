@@ -26,7 +26,10 @@ class TogglApp extends App.AppBase {
     _kernel.load(new Toggl.Injection.TogglCoreModule());
 
     _settingsService = _kernel.build(:SettingsService);
-    _scheduler = _kernel.build(:BackgroundScheduler);
+
+    if( Toybox.System has :ServiceDelegate) {
+      _scheduler = _kernel.build(:BackgroundScheduler);
+    }
   }
 
   // onStop() is called when your application is exiting
@@ -39,9 +42,7 @@ class TogglApp extends App.AppBase {
 
   function onBackgroundData(data) {
     var storageService = _kernel.build(:StorageService);
-    if(storageService != null) {
-      storageService.setTimer(data);
-    }
+    storageService.setTimer(data);
   }
 
   function onSettingsChanged() {
