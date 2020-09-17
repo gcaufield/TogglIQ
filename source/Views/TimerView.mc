@@ -13,6 +13,11 @@ module Toggl {
     const TASK_NUM_LINES = 3;
     const TASK_MARGIN = 18;
 
+    const COLORS = {
+      Toggl.TIMER_STATE_RUNNING=> Gfx.COLOR_GREEN,
+      Toggl.TIMER_STATE_STOPPED=> Gfx.COLOR_RED
+    };
+
     private var _timer;
     private var _layoutProvider;
     private var _timerFont;

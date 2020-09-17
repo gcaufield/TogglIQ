@@ -9,11 +9,6 @@ class TogglView extends Ui.View {
   const NTFCTN_FONT = Gfx.FONT_XTINY;
   const NTFCTN_MARGIN = 6;
 
-  const COLORS = {
-    Toggl.TIMER_STATE_RUNNING=> Gfx.COLOR_GREEN,
-    Toggl.TIMER_STATE_STOPPED=> Gfx.COLOR_RED
-  };
-
   const NTFCTN_MESG = {
     Toggl.TIMER_NTFCTN_REQUEST_FAILED=> Rez.Strings.RequestFailed
   };
