@@ -133,6 +133,5 @@ module Toggl {
       // Request an update in 50 ms, to allow for quick scrolling without wasting data
       _updateTimer.start( method(:update), 50, false );
     }
-
   }
 }
