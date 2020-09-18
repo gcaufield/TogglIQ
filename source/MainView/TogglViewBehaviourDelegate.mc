@@ -10,14 +10,11 @@ class TogglViewBehaviourDelegate extends Ui.BehaviorDelegate {
   //!
   //! @returns Array of required interfaces
   function getDependencies() {
-    return [:TogglManager, :TogglTimer, :UiFactory];
+    return [:UiFactory];
   }
 
   function initialize(deps) {
     BehaviorDelegate.initialize();
-
-    _manager = deps[:TogglManager];
-    _timer = deps[:TogglTimer];
     _uiFactory = deps[:UiFactory];
   }
 

@@ -1,13 +1,14 @@
+//! RoundLayoutProvider.mc
+//!
+//! Copyright Greg Caufield 2017
+
 using Toybox.System;
 using Toybox.Graphics;
 using Toybox.Math;
 
 module Toggl {
   class RoundLayoutProvider {
-    function getDependencies() {
-    }
-
-    function initialize(deps) {
+    function initialize() {
     }
 
     //! Finds the offset from the bottom of the screen required to display the timer string

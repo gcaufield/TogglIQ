@@ -14,6 +14,7 @@ using MonkeyInject;
 class TogglApp extends App.AppBase {
   hidden var _settingsService;
   hidden var _scheduler;
+  hidden var _togglManager;
 
   hidden var _kernel;
 
@@ -63,6 +64,10 @@ class TogglApp extends App.AppBase {
   function getInitialView() {
     // Launching into the foreground, load the foregrond components
     _kernel.load(new Toggl.Injection.ForegroundModule());
-    return [ _kernel.build(:View), _kernel.build(:ViewBehaviourDelegate)];
+    _togglManager = _kernel.build(:TogglManager);
+    _togglManager.startUpdate();
+
+    return [ _kernel.build(:View),
+             _kernel.build(:ViewBehaviourDelegate)];
   }
 }

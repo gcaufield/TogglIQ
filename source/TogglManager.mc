@@ -119,6 +119,13 @@ module Toggl {
       _updateTimer.stop();
     }
 
+    //! Begins Updating the timer
+    //! Adds a slight delay before updating, to allow for app to scroll
+    function startUpdate() {
+      // Request an update in 50 ms, to allow for quick scrolling without wasting data
+      _updateTimer.start( method(:update), 50, false );
+    }
+
     private function restoreTimer() {
       var timer = _storageService.getTimer();
 
@@ -127,11 +134,5 @@ module Toggl {
       }
     }
 
-    //! Begins Updating the timer
-    //! Adds a slight delay before updating, to allow for app to scroll
-    private function startUpdate() {
-      // Request an update in 50 ms, to allow for quick scrolling without wasting data
-      _updateTimer.start( method(:update), 50, false );
-    }
   }
 }
