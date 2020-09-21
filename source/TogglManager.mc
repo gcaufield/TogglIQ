@@ -13,7 +13,8 @@ module Toggl {
     private var _settingsService;
     private var _storageService;
 
-    hidden var _togglTimer;
+    private var _togglTimer;
+    private var _notificationModel;
 
     //! Static Interface Dependency Retriever
     //!
@@ -21,6 +22,7 @@ module Toggl {
     function getDependencies() {
       return [:TogglApiService,
               :TogglTimer,
+              :NotificationModel,
               :SettingsService,
               :StorageService];
     }
@@ -28,6 +30,7 @@ module Toggl {
     function initialize(deps) {
       _apiService = deps[:TogglApiService];
       _togglTimer = deps[:TogglTimer];
+      _notificationModel = deps[:NotificationModel];
       _settingsService = deps[:SettingsService];
       _storageService = deps[:StorageService];
 
@@ -48,7 +51,7 @@ module Toggl {
       }
       else {
         Sys.println( "Request Failed: " + responseCode );
-        _togglTimer.setNotification(Toggl.TIMER_NTFCTN_REQUEST_FAILED);
+        _notificationModel.setNotification(Toggl.TIMER_NTFCTN_REQUEST_FAILED);
       }
 
       update();

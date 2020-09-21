@@ -6,29 +6,21 @@ using Toybox.StringUtil as Util;
 using Toybox.Math as Math;
 
 class TogglView extends Ui.View {
-  const NTFCTN_FONT = Gfx.FONT_XTINY;
-  const NTFCTN_MARGIN = 6;
-
-  const NTFCTN_MESG = {
-    Toggl.TIMER_NTFCTN_REQUEST_FAILED=> Rez.Strings.RequestFailed
-  };
-
-  hidden var _timer;
-  hidden var _update;
-  hidden var _timerFont;
-  hidden var _timerView;
+  private var _update;
+  private var _timerView;
+  private var _notificationView;
 
   //! Static Interface Dependency Retriever
   //!
   //! @returns Array of required interfaces
   function getDependencies() {
-    return [:TogglTimer, :TickManager, :TimerView];
+    return [:TickManager, :TimerView, :NotificationView];
   }
 
   function initialize(deps) {
     View.initialize();
-    _timer = deps[:TogglTimer];
     _timerView = deps[:TimerView];
+    _notificationView = deps[:NotificationView];
 
     deps[:TickManager].addListener( method(:onTick), 1000 );
   }
@@ -38,13 +30,9 @@ class TogglView extends Ui.View {
     _timerView.onLayout(dc);
   }
 
-  function uiUpdate() {
-    Ui.requestUpdate();
-  }
-
   function onTick() {
     if( _update ) {
-      uiUpdate();
+      Ui.requestUpdate();
     }
   }
 
@@ -56,41 +44,13 @@ class TogglView extends Ui.View {
     _update = true;
   }
 
-  function updateTimerState(dc) {
+  // Update the view
+  function onUpdate(dc) {
     dc.setColor(Gfx.COLOR_TRANSPARENT, Gfx.COLOR_BLACK);
     dc.clear();
 
     _timerView.onUpdate(dc);
-    drawNotification( dc );
-  }
-
-  //! Draws the notification box if there is a pending notification
-  //!
-  //! @param dc - Dc object for the current update
-  hidden function drawNotification( dc ) {
-    var notification = _timer.getNotification();
-    if( null != notification ) {
-      var width = dc.getWidth();
-      var height = 60;
-
-      dc.setColor(Gfx.COLOR_BLACK, Gfx.COLOR_DK_GRAY);
-      dc.fillRectangle( 0, 0, width, height );
-
-      var ntfctnStr = Ui.loadResource( NTFCTN_MESG.get( notification ) );
-      var ntfctnHeight = dc.getTextDimensions( ntfctnStr, NTFCTN_FONT )[1];
-      dc.setColor( Gfx.COLOR_WHITE, Gfx.COLOR_BLACK );
-      dc.drawText( width / 2,
-          height - ( ntfctnHeight + NTFCTN_MARGIN ),
-          NTFCTN_FONT,
-          ntfctnStr,
-          Gfx.TEXT_JUSTIFY_CENTER);
-    }
-  }
-
-  // Update the view
-  function onUpdate(dc) {
-    // Call the parent onUpdate function to redraw the layout
-    updateTimerState(dc);
+    _notificationView.onUpdate(dc);
   }
 
   // Called when this View is removed from the screen. Save the

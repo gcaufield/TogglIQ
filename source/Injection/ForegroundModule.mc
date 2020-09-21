@@ -20,6 +20,10 @@ module Injection {
           .to(TogglTimer)
           .inSingletonScope();
 
+      bind(:NotificationModel)
+          .to(Toggl.Models.Notification)
+          .inSingletonScope();
+
       bind(:TogglManager)
           .to(TogglManager)
           .inSingletonScope();
@@ -36,6 +40,8 @@ module Injection {
         .to(TogglView);
       bind(:TimerView)
         .to(Toggl.TimerView);
+      bind(:NotificationView)
+        .to(Toggl.NotificationView);
 
       var screenType = System.getDeviceSettings().screenShape;
       if( System.SCREEN_SHAPE_SEMI_ROUND == screenType ) {

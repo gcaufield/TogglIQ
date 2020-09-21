@@ -14,29 +14,15 @@ module Toggl {
         TIMER_WARNING_NO_NETWORK
     }
 
-    enum {
-        TIMER_NTFCTN_REQUEST_FAILED
-    }
-
     class TogglTimer {
         hidden var _togglTimer;
         hidden var _onPropertyChanged;
         hidden var _startMoment;
         hidden var _warnings;
-        hidden var _ntfctn;
-        hidden var _ntfctnTimer = 0;
 
-        //! Static Interface Dependency Retriever
-        //!
-        //! @returns Array of required interfaces
-        function getDependencies() {
-          return [:TickManager];
-        }
-
-        function initialize(deps) {
+        function initialize() {
             _togglTimer = null;
             _warnings = {};
-            deps[:TickManager].addListener( method( :onTick ), 1000 );
         }
 
         function setTimer( togglTimer ) {
@@ -57,27 +43,10 @@ module Toggl {
             }
         }
 
-        function onTick() {
-            if( _ntfctnTimer == 0 ) {
-                return;
-            }
-
-            _ntfctnTimer -= 1;
-            if( _ntfctnTimer == 0 ) {
-                _ntfctn = null;
-            }
-        }
-
         function setWarning( warning ) {
             if(!_warnings.hasKey(warning)) {
                 _warnings.put(warning, true);
             }
-        }
-
-        //! Sets a notification
-        function setNotification( ntfctn ) {
-            _ntfctn = ntfctn;
-            _ntfctnTimer = 5;
         }
 
         function clearWarning( warning ) {
