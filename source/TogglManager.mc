@@ -61,14 +61,26 @@ module Toggl {
       if( responseCode == 200 ) {
         _togglTimer.clearWarning(Toggl.TIMER_WARNING_INVALID_API_KEY);
 
-        _storageService.setTimer(data["data"]);
-        _togglTimer.setTimer(data["data"]);
+        var timerData = data["data"];
+
+        _storageService.setTimer(timerData);
+        _togglTimer.setTimer(timerData);
+
+        if(timerData != null && timerData["pid"] != null) {
+          _apiService.getProject(timerData["pid"], method(:onGetProject));
+        }
       }
       else {
         _togglTimer.setWarning(Toggl.TIMER_WARNING_INVALID_API_KEY);
       }
 
       _updateTimer.start(method(:update), 2000, false);
+    }
+
+    function onGetProject(responseCode, data) {
+      if( responseCode == 200 ) {
+        _togglTimer.setProject(data["data"]);
+      }
     }
 
     function onSettingsUpdated() {

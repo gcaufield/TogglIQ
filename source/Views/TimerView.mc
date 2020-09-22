@@ -7,6 +7,8 @@ using Toybox.Lang as Lang;
 using Toybox.Time.Gregorian as Date;
 using Toybox.StringUtil as Util;
 
+using Toybox.System;
+
 module Toggl {
   class TimerView {
     const TASK_FONT = Gfx.FONT_MEDIUM;
@@ -54,6 +56,7 @@ module Toggl {
       if( _timer.getTimerState() == Toggl.TIMER_STATE_RUNNING ) {
         var duration = _timer.getTimerDuration();
         var currentTask = _timer.getActiveTaskString();
+        var currentProject = _timer.getProjectName();
         var width = dc.getWidth();
         var height = dc.getHeight();
 
@@ -67,15 +70,40 @@ module Toggl {
             timeString,
             Gfx.TEXT_JUSTIFY_CENTER );
 
-        currentTask = wrapString( dc, currentTask, TASK_FONT, TASK_MARGIN, TASK_NUM_LINES );
+        var projectHeight = 0;
+        if( currentProject != null ) {
+          currentTask = wrapString(dc, currentTask, TASK_FONT, TASK_MARGIN, TASK_NUM_LINES - 1);
+          currentProject = wrapString(dc, currentProject, TASK_FONT, TASK_MARGIN, 1);
+
+          projectHeight = dc.getTextDimensions(currentProject, TASK_FONT)[1];
+        }
+        else {
+          currentTask = wrapString(dc, currentTask, TASK_FONT, TASK_MARGIN, TASK_NUM_LINES);
+        }
 
         var stringSize = dc.getTextDimensions(currentTask, TASK_FONT);
 
+        // Determine the total height of the 2 strings
+        var labelHeight = stringSize[1] + projectHeight;
+        var taskOffset = (height / 2) - (labelHeight / 2);
+
         dc.drawText( width / 2,
-            ( height / 2 ) - ( stringSize[1] / 2 ),
+            taskOffset,
             TASK_FONT,
             currentTask,
             Gfx.TEXT_JUSTIFY_CENTER );
+
+        if(currentProject != null) {
+          var projectOffset = taskOffset + stringSize[1];
+
+          System.println("color is: " + _timer.getProjectColor());
+
+          dc.drawText( width / 2,
+              projectOffset,
+              TASK_FONT,
+              currentProject,
+              Gfx.TEXT_JUSTIFY_CENTER );
+        }
       }
     }
 
