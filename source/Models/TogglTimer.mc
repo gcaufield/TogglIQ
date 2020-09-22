@@ -93,9 +93,5 @@ module Toggl {
         function getWarnings() {
             return _warnings;
         }
-
-        function getNotification() {
-            return _ntfctn;
-        }
     }
 }

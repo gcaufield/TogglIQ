@@ -5,12 +5,12 @@
 
 module Toggl {
 module Models {
+  enum {
+    TIMER_NTFCTN_REQUEST_FAILED
+  }
+
   //! Model class for representing an active notification
   class Notification {
-    enum {
-      TIMER_NTFCTN_REQUEST_FAILED
-    }
-
     //! Static Interface Dependency Retriever
     //!
     //! @returns Array of required interfaces
@@ -40,6 +40,10 @@ module Models {
     function setNotification( ntfctn ) {
       _ntfctn = ntfctn;
       _ntfctnTimer = 5;
+    }
+
+    function getNotification() {
+        return _ntfctn;
     }
   }
 }
