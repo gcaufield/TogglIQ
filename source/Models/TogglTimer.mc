@@ -114,7 +114,7 @@ module Toggl {
     //!  project
     function getProjectColor() {
       if( _project != null ) {
-        return _project["color"];
+        return _project["color"].toNumber();
       }
 
       return null;

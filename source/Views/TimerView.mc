@@ -20,6 +20,24 @@ module Toggl {
       Toggl.TIMER_STATE_STOPPED=> Gfx.COLOR_RED
     };
 
+    const PROJECT_COLORS = [
+      0x0b83d9 ,
+      0x9e5bd9,
+      0xd94182,
+      0xe36a00,
+      0xbf7000,
+      0x2da608,
+      0x18ae9b,
+      0xc9806b,
+      0x465bb3,
+      0x990099,
+      0xc7af14,
+      0x566614,
+      0xd92b2b,
+      0x525266,
+      0x991102
+    ];
+
     private var _timer;
     private var _layoutProvider;
     private var _timerFont;
@@ -96,13 +114,18 @@ module Toggl {
         if(currentProject != null) {
           var projectOffset = taskOffset + stringSize[1];
 
-          System.println("color is: " + _timer.getProjectColor());
+          var projectColor = _timer.getProjectColor();
+          if(projectColor < PROJECT_COLORS.size()) {
+            dc.setColor(PROJECT_COLORS[_timer.getProjectColor()], Gfx.COLOR_BLACK);
+          }
 
           dc.drawText( width / 2,
               projectOffset,
               TASK_FONT,
               currentProject,
               Gfx.TEXT_JUSTIFY_CENTER );
+
+          dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_BLACK);
         }
       }
     }
