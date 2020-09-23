@@ -27,8 +27,7 @@ module Toggl {
         Background.exit(null);
       } else {
         _apiService.setApiKey(apiKey);
-
-        _apiService.getCurrent( method(:onCurrentComplete) );
+        _apiService.getCurrent(method(:onCurrentComplete));
       }
     }
 

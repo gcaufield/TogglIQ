@@ -42,8 +42,8 @@ class TogglApp extends App.AppBase {
   }
 
   function onBackgroundData(data) {
-    var storageService = _kernel.build(:StorageService);
-    storageService.setTimer(data);
+    var timer = _kernel.build(:TogglTimer);
+    timer.setTimer(timer);
   }
 
   function onSettingsChanged() {
@@ -56,7 +56,6 @@ class TogglApp extends App.AppBase {
     // Incase we are killed before we complete. Schedule the next event as we
     // start up
     _scheduler.schedule();
-
     return [ _kernel.build(:ServiceDelegate) ];
   }
 

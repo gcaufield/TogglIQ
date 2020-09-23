@@ -14,6 +14,7 @@ module Toggl {
     TIMER_WARNING_NO_NETWORK
   }
 
+  (:glance)
   class TogglTimer {
     function getDependencies() {
       return [:StorageService];
