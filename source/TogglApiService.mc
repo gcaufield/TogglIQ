@@ -79,6 +79,13 @@ module Toggl {
         sendApiRequest("time_entries/" + id + "/stop", Comms.HTTP_REQUEST_METHOD_GET, null, callback );
       }
 
+      //! Request project information for a given project id
+      //!
+      //! @param id [Number] (required) ID of the project to request
+      //! @param callback [Method] (required) Callback for the response
+      function getProject( id, callback ) {
+        sendApiRequest("projects/" + id, Comms.HTTP_REQUEST_METHOD_GET, null, callback );
+      }
 
       //! Converts a Moment to the ISO8601
       //!

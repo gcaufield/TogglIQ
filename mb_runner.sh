@@ -137,7 +137,7 @@ function params_for_build
 {
     PARAMS+="--device \"${TARGET_DEVICE}\" "
     PARAMS+="--output \"${APP_NAME}.prg\" "
-    PARAMS+="--sdk-version \"${TARGET_SDK_VERSION}\" "
+    #PARAMS+="--sdk-version \"${TARGET_SDK_VERSION}\" "
     PARAMS+="--private-key \"${MB_PRIVATE_KEY}\" "
 
     PARAMS+="--apidb \"${API_DB}\" "

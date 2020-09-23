@@ -11,9 +11,9 @@ module Toggl {
     private var _requestPending;
     private var _apiService;
     private var _settingsService;
-    private var _storageService;
 
-    hidden var _togglTimer;
+    private var _togglTimer;
+    private var _notificationModel;
 
     //! Static Interface Dependency Retriever
     //!
@@ -21,19 +21,18 @@ module Toggl {
     function getDependencies() {
       return [:TogglApiService,
               :TogglTimer,
-              :SettingsService,
-              :StorageService];
+              :NotificationModel,
+              :SettingsService];
     }
 
     function initialize(deps) {
       _apiService = deps[:TogglApiService];
       _togglTimer = deps[:TogglTimer];
+      _notificationModel = deps[:NotificationModel];
       _settingsService = deps[:SettingsService];
-      _storageService = deps[:StorageService];
 
       _settingsService.registerForSettingsUpdated(self);
       updateApiToken();
-      restoreTimer();
       _updateTimer = new Timer.Timer();
       _requestPending = false;
 
@@ -48,7 +47,7 @@ module Toggl {
       }
       else {
         Sys.println( "Request Failed: " + responseCode );
-        _togglTimer.setNotification(Toggl.TIMER_NTFCTN_REQUEST_FAILED);
+        _notificationModel.setNotification(Toggl.TIMER_NTFCTN_REQUEST_FAILED);
       }
 
       update();
@@ -58,14 +57,25 @@ module Toggl {
       if( responseCode == 200 ) {
         _togglTimer.clearWarning(Toggl.TIMER_WARNING_INVALID_API_KEY);
 
-        _storageService.setTimer(data["data"]);
-        _togglTimer.setTimer(data["data"]);
+        var timerData = data["data"];
+
+        _togglTimer.setTimer(timerData);
+
+        if(timerData != null && timerData["pid"] != null) {
+          _apiService.getProject(timerData["pid"], method(:onGetProject));
+        }
       }
       else {
         _togglTimer.setWarning(Toggl.TIMER_WARNING_INVALID_API_KEY);
       }
 
       _updateTimer.start(method(:update), 2000, false);
+    }
+
+    function onGetProject(responseCode, data) {
+      if( responseCode == 200 ) {
+        _togglTimer.setProject(data["data"]);
+      }
     }
 
     function onSettingsUpdated() {
@@ -119,20 +129,11 @@ module Toggl {
       _updateTimer.stop();
     }
 
-    private function restoreTimer() {
-      var timer = _storageService.getTimer();
-
-      if(timer != null && timer != "") {
-        _togglTimer.setTimer(timer);
-      }
-    }
-
     //! Begins Updating the timer
     //! Adds a slight delay before updating, to allow for app to scroll
-    private function startUpdate() {
+    function startUpdate() {
       // Request an update in 50 ms, to allow for quick scrolling without wasting data
       _updateTimer.start( method(:update), 50, false );
     }
-
   }
 }

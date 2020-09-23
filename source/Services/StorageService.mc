@@ -35,6 +35,26 @@ class StorageService {
       return App.getApp().getProperty("timer");
     }
   }
+
+  function setProject(project) {
+    if(Toybox.Application has :Storage) {
+      App.Storage.setValue("project", project);
+    } else {
+      // For backwards compatibility we will do this if on a device that doesn't
+      // support Storage
+      App.getApp().setProperty("project", project);
+    }
+  }
+
+  function getProject() {
+    if(Toybox.Application has :Storage) {
+      return App.Storage.getValue("project");
+    } else {
+      // For backwards compatibility we will do this if on a device that doesn't
+      // support Properties
+      return App.getApp().getProperty("project");
+    }
+  }
 }
 
 } // Services

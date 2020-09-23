@@ -14,6 +14,8 @@ using MonkeyInject;
 class TogglApp extends App.AppBase {
   hidden var _settingsService;
   hidden var _scheduler;
+  hidden var _togglManager;
+  hidden var _serviceBindingComplete;
 
   hidden var _kernel;
 
@@ -30,6 +32,8 @@ class TogglApp extends App.AppBase {
     if( Toybox.System has :ServiceDelegate) {
       _scheduler = _kernel.build(:BackgroundScheduler);
     }
+
+    _serviceBindingComplete = false;
   }
 
   // onStop() is called when your application is exiting
@@ -40,9 +44,20 @@ class TogglApp extends App.AppBase {
     }
   }
 
+  function bindServices() {
+    if(!_serviceBindingComplete) {
+      _kernel.load(new Toggl.Injection.ServicesModule());
+      _serviceBindingComplete = true;
+    }
+  }
+
   function onBackgroundData(data) {
-    var storageService = _kernel.build(:StorageService);
-    storageService.setTimer(data);
+    // As this happens before the initial view is loaded, ensure the services
+    // that we will need are bound
+    bindServices();
+
+    var timer = _kernel.build(:TogglTimer);
+    timer.setTimer(data);
   }
 
   function onSettingsChanged() {
@@ -55,14 +70,19 @@ class TogglApp extends App.AppBase {
     // Incase we are killed before we complete. Schedule the next event as we
     // start up
     _scheduler.schedule();
-
     return [ _kernel.build(:ServiceDelegate) ];
   }
 
   // Return the initial view of your application here
   function getInitialView() {
     // Launching into the foreground, load the foregrond components
+    bindServices();
     _kernel.load(new Toggl.Injection.ForegroundModule());
-    return [ _kernel.build(:View), _kernel.build(:ViewBehaviourDelegate)];
+
+    _togglManager = _kernel.build(:TogglManager);
+    _togglManager.startUpdate();
+
+    return [ _kernel.build(:View),
+             _kernel.build(:ViewBehaviourDelegate)];
   }
 }
