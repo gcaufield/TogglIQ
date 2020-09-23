@@ -11,9 +11,10 @@ using Toybox.System;
 
 module Toggl {
   class TimerView {
+    const PROJECT_FONT = Gfx.FONT_SMALL;
     const TASK_FONT = Gfx.FONT_MEDIUM;
     const TASK_NUM_LINES = 3;
-    const TASK_MARGIN = 18;
+    const TASK_MARGIN = 19;
 
     const COLORS = {
       Toggl.TIMER_STATE_RUNNING=> Gfx.COLOR_GREEN,
@@ -91,9 +92,9 @@ module Toggl {
         var projectHeight = 0;
         if( currentProject != null ) {
           currentTask = wrapString(dc, currentTask, TASK_FONT, TASK_MARGIN, TASK_NUM_LINES - 1);
-          currentProject = wrapString(dc, currentProject, TASK_FONT, TASK_MARGIN, 1);
+          currentProject = wrapString(dc, currentProject, PROJECT_FONT, TASK_MARGIN, 1);
 
-          projectHeight = dc.getTextDimensions(currentProject, TASK_FONT)[1];
+          projectHeight = dc.getTextDimensions(currentProject, PROJECT_FONT)[1];
         }
         else {
           currentTask = wrapString(dc, currentTask, TASK_FONT, TASK_MARGIN, TASK_NUM_LINES);
@@ -121,7 +122,7 @@ module Toggl {
 
           dc.drawText( width / 2,
               projectOffset,
-              TASK_FONT,
+              PROJECT_FONT,
               currentProject,
               Gfx.TEXT_JUSTIFY_CENTER );
 

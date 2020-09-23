@@ -11,7 +11,6 @@ module Toggl {
     private var _requestPending;
     private var _apiService;
     private var _settingsService;
-    private var _storageService;
 
     private var _togglTimer;
     private var _notificationModel;
@@ -23,8 +22,7 @@ module Toggl {
       return [:TogglApiService,
               :TogglTimer,
               :NotificationModel,
-              :SettingsService,
-              :StorageService];
+              :SettingsService];
     }
 
     function initialize(deps) {
@@ -32,11 +30,9 @@ module Toggl {
       _togglTimer = deps[:TogglTimer];
       _notificationModel = deps[:NotificationModel];
       _settingsService = deps[:SettingsService];
-      _storageService = deps[:StorageService];
 
       _settingsService.registerForSettingsUpdated(self);
       updateApiToken();
-      restoreTimer();
       _updateTimer = new Timer.Timer();
       _requestPending = false;
 
@@ -63,7 +59,6 @@ module Toggl {
 
         var timerData = data["data"];
 
-        _storageService.setTimer(timerData);
         _togglTimer.setTimer(timerData);
 
         if(timerData != null && timerData["pid"] != null) {
@@ -140,14 +135,5 @@ module Toggl {
       // Request an update in 50 ms, to allow for quick scrolling without wasting data
       _updateTimer.start( method(:update), 50, false );
     }
-
-    private function restoreTimer() {
-      var timer = _storageService.getTimer();
-
-      if(timer != null && timer != "") {
-        _togglTimer.setTimer(timer);
-      }
-    }
-
   }
 }
