@@ -19,7 +19,7 @@ module Toggl {
       return dc.getHeight() - dimensions[1];
     }
 
-    protected function getTimerArc(dc, font) {
+    public function getTimerArc(dc, font) {
       return [230.0d, 310.0d];
     }
   }
