@@ -1,3 +1,7 @@
+# Reset the base source path to include only source files in the source folder. The
+# default source path includes source files in the project folder and all subfolders.
+base.sourcePath = source
+
 project.manifest = manifest.xml
 
 # Load the Icon Paths

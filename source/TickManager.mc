@@ -5,6 +5,7 @@ class TickManager {
   class TickCounter {
     var ticks;
     var duration;
+    var restart;
   }
 
   hidden var _timer;
@@ -29,12 +30,27 @@ class TickManager {
     var tickCounter = new TickCounter();
     tickCounter.ticks = (duration / _tickLength).toNumber();
     tickCounter.duration = tickCounter.ticks;
+    tickCounter.restart = true;
 
     _activeTimers.put( listener, tickCounter );
   }
 
+  function delay(listener, duration) {
+    var timer = _activeTimers[listener];
+    if( timer == null ) {
+      timer = new TickCounter();
+      timer.restart = false;
+
+      _activeTimers.put( listener, timer );
+    }
+
+    timer.ticks = (duration / _tickLength).toNumber();
+    timer.duration = timer.ticks;
+  }
+
   function onTick() {
     var keys = _activeTimers.keys();
+    var keysToRemove = new List();
     for( var i = 0; i < keys.size(); i++) {
       var key = keys[i];
       var tickCounter = _activeTimers.get(keys[i]);
@@ -47,8 +63,18 @@ class TickManager {
       if( tickCounter.ticks == 0 ) {
         key.invoke();
 
-        tickCounter.ticks = tickCounter.duration;
+        if(tickCounter.restart) {
+          tickCounter.ticks = tickCounter.duration;
+        }
+        else {
+          keysToRemove.pushBack(key);
+        }
       }
+    }
+
+    // Remove any expired timers that don't have a restart set
+    for(var it = keysToRemove.getIterator(); it != null; it = it.next()) {
+      _activeTimers.remove(it.get());
     }
   }
 }

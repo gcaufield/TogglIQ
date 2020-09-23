@@ -4,9 +4,10 @@ using Toggl;
 class TogglMenuInputDelegate extends Ui.MenuInputDelegate {
   private var _manager;
   private var _uiFactory;
+  private var _recentTimerManager;
 
   function getDependencies() {
-    return [:TogglManager, :UiFactory];
+    return [:TogglManager, :UiFactory, :RecentTimerManager];
   }
 
   function initialize(deps) {
@@ -14,6 +15,7 @@ class TogglMenuInputDelegate extends Ui.MenuInputDelegate {
 
     _manager = deps[:TogglManager];
     _uiFactory = deps[:UiFactory];
+    _recentTimerManager = deps[:RecentTimerManager];
   }
 
   function onMenuItem(item) {
@@ -33,6 +35,10 @@ class TogglMenuInputDelegate extends Ui.MenuInputDelegate {
       Ui.pushView(new Ui.TextPicker( "" ),
                   _uiFactory.get(:StartCustomTimerDelegate),
                   Ui.SLIDE_DOWN);
+    }
+    else if( item == :startRecentTimer ) {
+      Ui.popView( Ui.SLIDE_IMMEDIATE );
+      _recentTimerManager.show();
     }
 
     return false;

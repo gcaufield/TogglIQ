@@ -1,6 +1,8 @@
 # TogglIQ
 
-Garmin ConnectIQ Widget for displaying at-a-glance information related to a user’s Active [Toggl](https://toggl.com/) Timer
+[![Build Status](https://travis-ci.org/gcaufield/TogglIQ.svg?branch=develop)](https://travis-ci.org/gcaufield/TogglIQ)
+
+Garmin ConnectIQ Widget for displaying at-a-glance information related to a user’s Active [Toggl](https://track.toggl.com/) Timer
 
 # Supported Garmin Devices
 - Approach s60

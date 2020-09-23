@@ -32,6 +32,7 @@
             <iq:product id="fr645"/>
             <iq:product id="fr645m"/>
             <iq:product id="fr735xt"/>
+            <iq:product id="fr745"/>
             <iq:product id="fr935"/>
             <iq:product id="fr945"/>
             <iq:product id="legacyherocaptainmarvel"/>
@@ -62,6 +63,8 @@
         <iq:languages>
             <iq:language>eng</iq:language>
         </iq:languages>
-        <iq:barrels/>
+        <iq:barrels>
+            <iq:depends name="MonkeyInject" version="0.2.0"/>
+        </iq:barrels>
     </iq:application>
 </iq:manifest>

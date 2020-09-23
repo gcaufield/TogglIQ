@@ -2,50 +2,45 @@
 
 title TogglIQ UI Control
 
-class MainViewBehaviorDelegate
-class AboutViewBehaviorDelegate
-class MenuBehaviorDelegate
+class TimerView
+class WarningView
 
-interface IInterfaceController {
-    + void pushMenu()
-    + void pushAbout()
-    + void pop()
-    + Array getInitialView()
+class NotificationView
+
+interface IView {
+  + void update(dc)
 }
 
-class InterfaceController {
-    - IInterfaceFactory factory_
+class MainView {
 }
 
-interface IInterfaceFactory {
-    + void getViewDelegatePair(ViewKey key)
+class AboutView
+
+class ViewController {
+}
+
+class TimerModel {
+}
+
+class WarningModel {
+}
+
+class NotificationModel {
 }
 
 enum ViewKey {
     Main,
-    About,
-    Menu
+    About
 }
 
-interface IFactory {
-    + void bind(WeakReference kernel)
-}
+MainView *-- IView
 
-class InterfaceFactory
+IView <|-- TimerView
+IView <|-- WarningView
+IView <|-- NotificationView
 
-class Kernel
-
-MainViewBehaviorDelegate --* IInterfaceController
-AboutViewBehaviorDelegate --* IInterfaceController
-MenuBehaviorDelegate --* IInterfaceController
-IInterfaceController <|-- InterfaceController
-
-InterfaceController --* IInterfaceFactory
-IInterfaceFactory - ViewKey
-
-IInterfaceFactory <|-- InterfaceFactory
-InterfaceFactory --|> IFactory
-
-InterfaceFactory -* Kernel
+TimerView *-- TimerModel
+WarningView *-- WarningModel
+NotificationView *-- NotificationModel
 
 @enduml

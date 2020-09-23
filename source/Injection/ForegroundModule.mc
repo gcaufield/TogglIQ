@@ -3,10 +3,11 @@
 // Copyright 2020 Greg Caufield
 
 using Toybox.System;
+using MonkeyInject;
 
 module Toggl {
 module Injection {
-  class ForegroundModule extends Module {
+  class ForegroundModule extends MonkeyInject.Module {
     function initialize() {
       Module.initialize();
 
@@ -19,6 +20,10 @@ module Injection {
           .to(TogglTimer)
           .inSingletonScope();
 
+      bind(:NotificationModel)
+          .to(Toggl.Models.Notification)
+          .inSingletonScope();
+
       bind(:TogglManager)
           .to(TogglManager)
           .inSingletonScope();
@@ -26,16 +31,30 @@ module Injection {
       bind(:UiFactory)
           .toFactory();
 
+      bind(:RecentTimerManager)
+          .to(Managers.RecentTimerManager)
+          .inSingletonScope();
+
       // Bind the View interface based on the screen shape.
+      bind(:View)
+        .to(TogglView);
+      bind(:TimerView)
+        .to(Toggl.TimerView);
+      bind(:NotificationView)
+        .to(Toggl.NotificationView);
+
       var screenType = System.getDeviceSettings().screenShape;
       if( System.SCREEN_SHAPE_SEMI_ROUND == screenType ) {
-        bind(:View)
-            .to(TogglSemiRoundView);
+        bind(:TimerLayoutProvider)
+            .to(Toggl.SemiRoundLayoutProvider);
       }
       else {
-        bind(:View)
-            .to(TogglRoundView);
+        bind(:TimerLayoutProvider)
+            .to(Toggl.RoundLayoutProvider);
        }
+
+      bind (:ProgressDelegate)
+          .to(Delegates.ProgressDelegate);
 
       // Bind the behaviour delegate for the view
       bind(:ViewBehaviourDelegate)
@@ -55,6 +74,12 @@ module Injection {
 
       bind(:StartCustomTimerDelegate)
           .to(StartCustomTimerTextPickerDelegate);
+
+      bind(:RecentTimerView)
+          .to(Views.RecentTimerMenu);
+
+      bind(:RecentTimerDelegate)
+          .to(Delegates.RecentTimerMenuDelegate);
     }
   }
 }

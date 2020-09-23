@@ -4,13 +4,13 @@
 
 using Toybox.System;
 using Toggl;
-
+using MonkeyInject;
 
 module Toggl {
 module Injection {
 
   (:background)
-  class TogglCoreModule extends Module {
+  class TogglCoreModule extends MonkeyInject.Module {
     function initialize() {
       Module.initialize();
 

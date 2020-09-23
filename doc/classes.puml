@@ -1,0 +1,123 @@
+@startuml
+
+title TogglIQ Class Diagram
+
+class TickManager implements TimerController {
+}
+
+class TogglApiService implements ApiService {
+}
+
+class TogglApp extends Toybox.Application.AppBase{
+}
+
+class TogglManager implements TogglController {
+}
+
+class TogglTimer implements TimerModel {
+}
+
+class TogglAboutView extends Toybox.WatchUi.View {
+}
+
+class TogglAboutViewBehaviourDelegate  {
+}
+
+class TogglView {
+}
+
+class TogglRoundView extends TogglView {
+}
+
+class TogglSemiRoundView extends TogglView {
+}
+
+class TogglViewBehaviourDelegate {
+}
+
+class StartCustomTimerTextPickerDelegate {
+}
+
+class TogglMenu {
+}
+
+class TogglMenuInputDelegate {
+}
+
+class BackgroundScheduler {
+}
+
+class BackgroundService {
+}
+
+class SettingsService implements SettingsProvider {
+}
+
+class StorageService implements StorageProvider {
+}
+
+interface ApiService {
+}
+
+interface TimerModel {
+}
+
+interface SettingsProvider {
+}
+
+interface StorageProvider {
+}
+
+interface TimerController {
+}
+
+interface TogglController {
+}
+
+class Toybox.Timer.Timer {
+}
+
+class Toybox.Application.AppBase {
+}
+
+class Toybox.Application.Storage <<(M, orange)>> {
+  + {static} getValue(key)
+}
+
+class Toybox.Application.Properties <<(M, orange)>> {
+  + {static} getValue(key)
+}
+
+interface UiFactory {
+}
+
+TogglView *-- TimerModel
+TogglView *-- TimerController
+
+TogglViewBehaviourDelegate *-- UiFactory
+TogglViewBehaviourDelegate *-- TimerModel
+TogglViewBehaviourDelegate *-- TogglController
+TogglViewBehaviourDelegate --> TogglMenu
+TogglViewBehaviourDelegate --> TogglMenuInputDelegate
+
+TogglMenu *-- TimerModel
+
+TogglMenuInputDelegate *-- TogglController
+TogglMenuInputDelegate *-- UiFactory
+
+BackgroundService *-- ApiService
+BackgroundService *-- SettingsProvider
+
+SettingsService --> Toybox.Application.Properties
+StorageService --> Toybox.Application.Storage
+
+TickManager *-- Toybox.Timer.Timer
+
+TogglTimer *-- TimerController
+
+TogglManager *-- ApiService
+TogglManager *-- TimerModel
+TogglManager *-- SettingsProvider
+TogglManager *-- StorageProvider
+
+@enduml
