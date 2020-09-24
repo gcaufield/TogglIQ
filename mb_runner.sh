@@ -68,6 +68,7 @@ fi
 # *****************
 
 JUNGLE_FILES=("${PROJECT_HOME}/monkey.jungle" "${PROJECT_HOME}/barrels.jungle")
+TEST_JUNGLE_FILES=("${JUNGLE_FILES[@]}" "${PROJECT_HOME}/tests.jungle")
 MANIFEST_FILE="${PROJECT_HOME}/manifest.xml"
 CONFIG_FILE="${PROJECT_HOME}/mb_runner.cfg"
 
@@ -133,30 +134,35 @@ DEVICES="${MB_HOME}/bin/devices.xml"
 #PARAMS+="--private-key \"${MB_PRIVATE_KEY}\" "
 #PARAMS+="--rez <arg> "
 
+function common_params
+{
+  local -n JUNGLES=$1
+  PARAMS+="--device \"${TARGET_DEVICE}\" "
+  PARAMS+="--output \"${APP_NAME}.prg\" "
+  #PARAMS+="--sdk-version \"${TARGET_SDK_VERSION}\" "
+  PARAMS+="--private-key \"${MB_PRIVATE_KEY}\" "
+
+  PARAMS+="--apidb \"${API_DB}\" "
+  PARAMS+="--import-dbg \"${API_DEBUG}\" "
+  PARAMS+="--project-info \"${PROJECT_INFO}\" "
+
+  PARAMS+="--warn "
+
+  JUNGLES=$(printf "%s;" "${JUNGLES[@]}")
+  JUNGLES=${JUNGLES::-1}
+  PARAMS+="--jungles $JUNGLES "
+}
+
+function params_for_test
+{
+  common_params TEST_JUNGLE_FILES
+  PARAMS+="--unit-test "
+
+}
+
 function params_for_build
 {
-    PARAMS+="--device \"${TARGET_DEVICE}\" "
-    PARAMS+="--output \"${APP_NAME}.prg\" "
-    #PARAMS+="--sdk-version \"${TARGET_SDK_VERSION}\" "
-    PARAMS+="--private-key \"${MB_PRIVATE_KEY}\" "
-
-    PARAMS+="--apidb \"${API_DB}\" "
-    PARAMS+="--import-dbg \"${API_DEBUG}\" "
-    PARAMS+="--project-info \"${PROJECT_INFO}\" "
-    PARAMS+="--devices \"${DEVICES}\" "
-
-    PARAMS+="--unit-test "
-    PARAMS+="--warn "
-
-    if [ "${JUNGLE_FILE_EXISTS}" = false ] ; then
-        PARAMS+="--manifest \"${MANIFEST_FILE}\" "
-        PARAMS+="--rez \"${RESOURCES}\" "
-        PARAMS+="${SOURCES} "
-    else
-      JUNGLES=$(printf "%s;" "${JUNGLE_FILES[@]}")
-      JUNGLES=${JUNGLES::-1}
-      PARAMS+="--jungles $JUNGLES"
-    fi
+  common_params JUNGLE_FILES
 }
 
 function params_for_package
@@ -186,7 +192,7 @@ function compile
 
 function tests
 {
-    "${MB_HOME}/bin/monkeydo" "${PROJECT_HOME}/${APP_NAME}.prg" -t
+    "${MB_HOME}/bin/monkeydo" "${PROJECT_HOME}/${APP_NAME}.prg" "${TARGET_DEVICE}" -t
 }
 
 function clean
@@ -220,7 +226,7 @@ case "${1}" in
         compile
         ;;
    test)
-        params_for_build
+        params_for_test
         compile
         tests
         ;;

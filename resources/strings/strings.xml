@@ -1,7 +1,7 @@
 <strings>
     <string id="AppName">TogglIQ</string>
     <string id="ApiKey">Toggl API Key</string>
-    <string id="Version">v0.11.1-0-gcd41926</string>
+    <string id="Version"></string>
     <string id="Compatibility">Toggl API v8</string>
     <string id="About">About</string>
     <string id="StopTimer">Stop Timer</string>
