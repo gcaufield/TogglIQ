@@ -23,6 +23,12 @@ class Test {
 
   function tearDown() {
   }
+
+  function expectEq(expected, actual) {
+    if( actual != expected ) {
+      throw new TestException("Expected equality. " + actual + " != " + expected);
+    }
+  }
 }
 }
 }

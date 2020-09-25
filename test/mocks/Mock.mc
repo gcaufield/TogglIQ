@@ -16,7 +16,7 @@ enum {
 //! Base class for Mock Classes
 class Mock {
   private var _expectations = {};
-  private var _type = MOCK_TYPE_NAGGY;
+  private var _type;
 
   function initialize(mockType) {
     _type = mockType;

@@ -77,7 +77,13 @@ class TestRunner {
         logger.debug("[       OK ] " + testTitle);
       }
       catch (ex instanceof TestException) {
-        //logger.error(ex.getMessage());
+        ex.printStackTrace();
+        logger.error("[  FAILED  ] " + testTitle);
+        failedTests.add(testTitle);
+      }
+      catch (ex) {
+        logger.error("Unhandled Exception");
+        ex.printStackTrace();
         logger.error("[  FAILED  ] " + testTitle);
         failedTests.add(testTitle);
       }

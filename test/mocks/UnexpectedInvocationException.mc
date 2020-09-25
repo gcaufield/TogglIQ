@@ -10,7 +10,8 @@ module Mocks {
 //! Exception for a function invocation that was not declared
 class UnexpectedInvocationException extends Tests.TestException {
   function initialize(functionName) {
-    TestException.initialize();
+    TestException.initialize("");
+    self.mMessage = "Unexpected Invocation of function " + functionName;
   }
 }
 }

@@ -8,9 +8,9 @@ module MonkeyTest {
 module Tests {
 //! Base Exception for Failures from the test framework
 class TestException extends Lang.Exception {
-  function initialize() {
+  function initialize(msg) {
     Exception.initialize();
-    self.mMessage = "Test Failure";
+    self.mMessage = msg;
   }
 }
 }

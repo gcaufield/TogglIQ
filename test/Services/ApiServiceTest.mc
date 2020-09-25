@@ -11,7 +11,8 @@ class ApiServiceTest extends Tests.Test {
 
   function testList() {
     return {
-      :canSetApiKey => "canSetApiKey"
+      :canSetApiKey => "canSetApiKey",
+      :canGetCurrentTimer => "canGetCurrentTimer"
     };
   }
 
@@ -26,6 +27,20 @@ class ApiServiceTest extends Tests.Test {
 
     var apiService = new Toggl.ApiService(deps);
     apiService.setApiKey("1234");
+  }
+
+  function callback(response, data) {
+  }
+
+  function canGetCurrentTimer() {
+    var mockComms = new MockCommunications(Mocks.MOCK_TYPE_NICE);
+    var deps = {
+      :Communications => mockComms
+    };
+
+    var apiService = new Toggl.ApiService(deps);
+
+    apiService.getCurrent(method(:callback));
   }
 }
 
