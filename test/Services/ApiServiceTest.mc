@@ -2,9 +2,9 @@
 //!
 //! Copyright Greg Caufield 2020
 
-using Toybox.Lang;
+using MonkeyTest.Tests;
 
-class ApiServiceTest extends Test {
+class ApiServiceTest extends Tests.Test {
   function name() {
     return "ApiServiceTest";
   }
@@ -27,10 +27,5 @@ class ApiServiceTest extends Test {
     var apiService = new Toggl.ApiService(deps);
     apiService.setApiKey("1234");
   }
-}
-
-(:test)
-function run_ApiServiceTests(logger) {
-  return new TestRunner().runTestSuite(logger, ApiServiceTest);
 }
 

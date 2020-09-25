@@ -1,8 +1,20 @@
+//! Test.mc
+//!
+//! Copyright Greg Caufield 2020
+module MonkeyTest {
+
+(:Tests)
+module Tests {
+//! Base class of the Test Suite
 class Test {
-  function name() {
+  //! Child classes are expected to override this and return the suite name
+  public function name() {
     return "Unknown";
   }
-  function testList() {
+
+  //! Child classes are expected to override this and return a dictionary
+  //! mapping test symbols to thier names
+  public function testList() {
     return {};
   }
 
@@ -12,3 +24,6 @@ class Test {
   function tearDown() {
   }
 }
+}
+}
+
