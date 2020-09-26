@@ -12,7 +12,8 @@ class ApiServiceTest extends Tests.Test {
   function testList() {
     return {
       :canSetApiKey => "canSetApiKey",
-      :canGetCurrentTimer => "canGetCurrentTimer"
+      :canGetCurrentTimer => "canGetCurrentTimer",
+      :getCurrentTimerMakesWebRequest => "getCurrentTimerMakesWebRequest"
     };
   }
 
@@ -41,6 +42,22 @@ class ApiServiceTest extends Tests.Test {
     var apiService = new Toggl.ApiService(deps);
 
     apiService.getCurrent(method(:callback));
+  }
+
+  function getCurrentTimerMakesWebRequest() {
+    var mockComms = new MockCommunications(Mocks.MOCK_TYPE_NICE);
+      var deps = {
+        :Communications => mockComms
+      };
+
+    var apiService = new Toggl.ApiService(deps);
+
+    mockComms.expect(:makeWebRequest);
+
+    apiService.getCurrent(method(:callback));
+
+    // Assert the expectations were met.
+    mockComms.verifyAndClear();
   }
 }
 
