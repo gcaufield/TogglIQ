@@ -1,6 +1,0 @@
-# Do not hand edit this file. To make changes right click
-# on the project and select "Configure Monkey Barrels".
-
-MonkeyInject = "barrels\MonkeyInject-v0.3.0-0-g14ba8ef.barrel"
-base.barrelPath = $(base.barrelPath);$(MonkeyInject)
-
