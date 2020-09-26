@@ -19,7 +19,6 @@ mkdir -p "${SDK_DIR}"
 unzip "${SDK_FILE}" "bin/*" -d "${SDK_DIR}"
 
 ## Download devices from google drive
-pip install gdown
 gdown --id "1nDYmQqfE73wiSQJby5ZW4fkIfYc1ka6V" -O "${DEVICE_FILE}"
 mkdir -p "${DEVICE_DIR}"
 unzip "${DEVICE_FILE}" "Devices/*" -d "${DEVICE_DIR}"
@@ -30,4 +29,5 @@ openssl pkcs8 -topk8 -inform PEM -outform DER -in "${PEM_FILE}" -out "${DER_FILE
 export MB_HOME="${SDK_DIR}"
 export MB_PRIVATE_KEY="${DER_FILE}"
 
+mbget
 ./mb_runner.sh package
