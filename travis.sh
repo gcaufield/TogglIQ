@@ -29,5 +29,5 @@ openssl pkcs8 -topk8 -inform PEM -outform DER -in "${PEM_FILE}" -out "${DER_FILE
 export MB_HOME="${SDK_DIR}"
 export MB_PRIVATE_KEY="${DER_FILE}"
 
-mbget
+mbget --token ${GH_TOKEN}
 ./mb_runner.sh package
