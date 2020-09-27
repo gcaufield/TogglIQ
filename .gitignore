@@ -5,3 +5,7 @@ bin/
 *.prg
 *.prg.debug.xml
 *-settings.json
+
+# mbget files
+barrels.jungle
+barrels/

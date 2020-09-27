@@ -14,6 +14,10 @@ module Injection {
     function initialize() {
       Module.initialize();
 
+      bind(:Communications)
+        .to(Toggl.Communications)
+        .inSingletonScope();
+
       if( Toybox.System has :ServiceDelegate) {
         bind(:BackgroundScheduler)
           .to(Toggl.Services.BackgroundScheduler)
