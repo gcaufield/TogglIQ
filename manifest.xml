@@ -65,7 +65,7 @@
         </iq:languages>
         <iq:barrels>
             <iq:depends name="MonkeyInject" version="0.3.0"/>
-            <iq:depends name="MonkeyTest" version="0.0.2"/>
+            <!--iq:depends name="MonkeyTest" version="0.0.2"/-->
         </iq:barrels>
     </iq:application>
 </iq:manifest>
