@@ -3,8 +3,8 @@ language: java
 jdk: openjdk11
 
 install:
-  - pip install gdown
-  - pip install mbpkg
+  - pip3 install gdown
+  - pip3 install mbpkg
 
 script:
     - ./travis.sh
