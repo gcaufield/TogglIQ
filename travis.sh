@@ -32,4 +32,5 @@ export MB_PRIVATE_KEY="${DER_FILE}"
 mbget --token ${GH_TOKEN}
 cat barrels.jungle
 ls -lah barrels/
+cat barrels/*
 ./mb_runner.sh package
