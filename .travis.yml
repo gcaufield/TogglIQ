@@ -1,6 +1,17 @@
+sudo: required
 language: java
 
 jdk: openjdk11
 
+before_install:
+  - sudo apt-get -y install python3-pip python-dev
+  - sudo pip3 install -U setuptools
+  - sudo pip3 install -U wheel
+  - python3 -V
+  - pip3 -V
+install:
+  - pip3 install gdown
+  - pip3 install mbpkg
+
 script:
-    - ./travis.sh
+  - ./travis.sh
