@@ -52,7 +52,7 @@ class ApiServiceTest extends Tests.Test {
 
     var apiService = new Toggl.ApiService(deps);
 
-    mockComms.expect(:makeWebRequest).times(2);
+    mockComms.expect(:makeWebRequest);
 
     apiService.getCurrent(method(:callback));
 
