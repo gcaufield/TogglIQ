@@ -35,7 +35,7 @@ mbget --token ${GH_TOKEN}
 
 # Start an XServer and simulator and wait a couple seconds for it to start up
 Xorg -config ./dummy-1920x1080.conf :1 &
-DISPLAY=:1 "$MB_HOME/bin/simulator" &
-sleep 2s
+DISPLAY=:1
+./mb_runner.sh simulator
 
 ./mb_runner.sh test .
