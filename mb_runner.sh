@@ -96,6 +96,8 @@ if [ "${JUNGLE_FILE_EXISTS}" = false ] ; then
     SOURCES="`cd /; find \"${PROJECT_HOME}/${SOURCE_FOLDER}\" -iname '*.mc' | tr '\n' ' '`"
 fi
 
+OUT_DIR="${PROJECT_HOME}/bin"
+
 # ******************
 # sdk specific stuff
 # ******************
@@ -167,7 +169,8 @@ function params_for_build
 
 function params_for_package
 {
-    PARAMS+="--output \"${APP_NAME}.iq\" "
+    GIT_VER=$(git describe --long --dirty)
+    PARAMS+="--output \"${OUT_DIR}/${APP_NAME}-${GIT_VER}.iq\" "
     PARAMS+="--private-key \"${MB_PRIVATE_KEY}\" "
 
     PARAMS+="--package-app "
@@ -216,6 +219,13 @@ function push
     [ -e "${PROJECT_HOME}/${APP_NAME}.prg" ] && "${MB_HOME}/bin/monkeydo" "${PROJECT_HOME}/${APP_NAME}.prg" "${TARGET_DEVICE}" &
 }
 
+function prep_out_dir
+{
+if [ ! -d "$OUT_DIR" ]; then
+  mkdir $OUT_DIR
+fi
+}
+
 ###
 
 cd ${PROJECT_HOME}
@@ -232,6 +242,7 @@ case "${1}" in
         ;;
    package)
         params_for_package
+        prep_out_dir
         compile
         ;;
    clean)

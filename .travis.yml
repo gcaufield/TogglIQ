@@ -20,9 +20,9 @@ deploy:
   provider: releases
   api_key:
     secure: zXdz6PEhvbGx65ZV2giH1W6SPvpo43VYqjKtM3Cw8M8qesqIgNYM5P8iBSEGmha+uNHYjWCbo2IJwsezSuMwQ16qJQOqMRCcbkSQNdwJH5LHFuRSM6CPNUm7XcGbl1bsJ4fj7Wee89DD3JqSDNnN7Qo6rZdb1MQXpE63WjKvldzRmjutX/ql0hNFIpl/UMtEOOct2oKWfQAa0xr/+U7uuik5L/jq7MX34u8ZmQFI7HoAOPXI/gANm7ohx3CKIHRexIYSUiR90ag7X+uDZzJZRgD9WQdJLvgvwif2cO2n9TGEvHgiMWPi6e3iW0DxWw9cxDVCE9e7hIrVH/6UukKChZLJotUjDFcqkF6a45Mvw95p3gg4WONuU4W3FfTK5EgwII7QhSYVHqx8WV4wzfIuLbU3Z09Gxpc/CLVypGKPMM0llsBZdNgPDFTaim1NlQYIR15+FCXtTOQ8pzvSn0YeHoZVRJcer5fmA30BSqp4gpuoH7Vn2rSFxGyjA9MS1S+VerkJA4K/VQFkAViNFzTe1Esv39IGu3kk+I3bSiIlf2MqeyXQECwa+rPKYunXTodH6XkkkSPD0+6krEiPOKk0/JJgDTyzZ4H2f9Ym0bofNUb5LsghZ/ExvtfBuy02MuO9YSxhzHe+Bh6S63m1q7jNgP8BiZG6d9r8an06wvcgGaw=
-  file: TogglIQ.prg
   on:
-    repo: gcaufield/TogglIQ
-    tags: 'true'
+    tags: true
   skip_cleanup: 'true'
-  draft: 'true'
+  draft: true
+  file_glob: true
+  file: "bin/*.iq"
