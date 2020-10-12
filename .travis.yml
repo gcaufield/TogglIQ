@@ -13,7 +13,7 @@ before_install:
 - pip3 -V
 install:
 - pip3 install gdown
-- pip3 install mbpkg
+- pip3 install mbpkg==1.1.0
 script:
 - "./travis.sh"
 deploy:

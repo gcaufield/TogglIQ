@@ -29,7 +29,7 @@ openssl enc -salt -aes-128-cbc -pbkdf2 -d -in developer_key.encrypt -out develop
 export MB_HOME="${SDK_DIR}"
 export MB_PRIVATE_KEY="./developer_key"
 
-mbget --token ${GH_TOKEN}
+mbget --token ${GH_TOKEN} update
 ./mb_runner.sh package
 
 # Start an XServer and simulator and wait a couple seconds for it to start up

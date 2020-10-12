@@ -8,4 +8,4 @@ bin/
 
 # mbget files
 barrels.jungle
-barrels/
+.mbpkg/
