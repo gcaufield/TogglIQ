@@ -1,0 +1,13 @@
+{
+  "dataSource": "milestones",
+  "milestoneMatch": "{{tag_name}}",
+  "ignoreIssuesWith": [
+    "wontfix",
+    "duplicate"
+  ],
+  "draft": true,
+  "groupBy": {
+    "Enhancements:": ["enhancement"],
+    "Bug Fixes:": ["bug"]
+  }
+}
