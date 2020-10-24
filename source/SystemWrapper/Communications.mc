@@ -6,6 +6,7 @@ using Toybox.Communications as Comms;
 
 module Toggl {
   //! Wraps the Toybox Communications API in an interface
+  (:background)
   class Communications {
     function initialize() {
     }

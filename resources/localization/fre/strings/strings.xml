@@ -1,0 +1,11 @@
+<strings>
+    <string id="ApiKey">Toggl API Key</string>
+    <string id="About">Détails</string>
+    <string id="StopTimer">Arrêter la minuterie</string>
+    <string id="StartRecentTimer">Minuteur récent</string>
+    <string id="StartEmptyTimer">Minuterie vide</string>
+    <string id="StartCustomTimer">Minuterie nommée</string>
+    <string id="Warnings">Avertissements</string>
+    <string id="RequestFailed">Demande échoué</string>
+    <string id="Updating">Mise à jour...</string>
+</strings>

@@ -80,7 +80,7 @@ module Managers {
       var delegate = _uiFactory.get(:ProgressDelegate);
       delegate.setCancellable(self);
 
-      WatchUi.pushView(new WatchUi.ProgressBar("Updating...", null),
+      WatchUi.pushView(new WatchUi.ProgressBar(WatchUi.loadResource(Rez.Strings.Updating), null),
           delegate,
           WatchUi.SLIDE_IMMEDIATE);
 
