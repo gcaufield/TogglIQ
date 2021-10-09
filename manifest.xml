@@ -73,7 +73,7 @@
             <iq:language>fre</iq:language>
         </iq:languages>
         <iq:barrels>
-            <iq:depends name="MonkeyInject" version="0.3.0"/>
+            <iq:depends name="MonkeyInject" version="0.4.2"/>
             <iq:depends name="MonkeyTest" version="0.1.0"/>
         </iq:barrels>
     </iq:application>
