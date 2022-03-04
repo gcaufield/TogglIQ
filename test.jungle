@@ -1,2 +1,0 @@
-base.sourcePath = $(base.sourcePath);test
-base.MonkeyTest.annotations = Tests;Mocks
