@@ -2,7 +2,7 @@
 # travis.sh script to
 
 SDK_BASE_URL="https://developer.garmin.com/downloads/connect-iq/sdks"
-SDK="connectiq-sdk-lin-4.0.6-2021-10-06-af9b9d6e2.zip"
+SDK="connectiq-sdk-lin-4.0.9-2022-01-24-2154651d3.zip"
 SDK_URL="$SDK_BASE_URL/$SDK"
 SDK_FILE="sdk.zip"
 SDK_DIR="${HOME}/.Garmin/ConnectIQ/Sdk/"
