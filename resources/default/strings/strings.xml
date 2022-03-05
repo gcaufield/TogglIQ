@@ -1,6 +1,6 @@
 <strings>
     <string id="AppName">TogglIQ</string>
-    <string id="Version">0.12.2</string>
+    <string id="Version">0.12.3</string>
     <string id="Compatibility">Toggl API v8</string>
     <string id="ApiKey">Toggl API Key</string>
     <string id="About">About</string>
