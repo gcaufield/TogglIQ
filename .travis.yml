@@ -3,7 +3,7 @@ sudo: required
 language: java
 jdk: openjdk11
 before_install:
-- sudo apt-get -y install libpng16-16 libwebkitgtk-1.0-0 zlib1g-dev libc6-dev libstdc++6
+- sudo apt-get -y install libpng16-16 libwebkit2gtk-4.0-37 zlib1g-dev libc6-dev libstdc++6
 - sudo apt-get -y install python3-pip python-dev
 - sudo apt-get -y install wget
 - DEBIAN_FRONTEND=noninteractive sudo apt-get -y install xorg xserver-xorg-video-dummy
