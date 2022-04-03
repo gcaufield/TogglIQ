@@ -2,7 +2,7 @@
 # travis.sh script to
 
 SDK_BASE_URL="https://developer.garmin.com/downloads/connect-iq/sdks"
-SDK="connectiq-sdk-lin-4.0.9-2022-01-24-2154651d3.zip"
+SDK="connectiq-sdk-lin-4.1.1-2022-03-14-18db583bc.zip"
 SDK_URL="$SDK_BASE_URL/$SDK"
 SDK_FILE="sdk.zip"
 SDK_DIR="${HOME}/.Garmin/ConnectIQ/Sdk/"
@@ -33,7 +33,7 @@ mbget --token ${GH_TOKEN} update
 ./mb_runner.sh package
 
 # Start an XServer and simulator and wait a couple seconds for it to start up
-#Xorg -config ./dummy-1920x1080.conf :1 &
-#DISPLAY=:1 ./mb_runner.sh simulator
-#
-#./mb_runner.sh test .
+Xorg -config ./dummy-1920x1080.conf :1 &
+DISPLAY=:1 ./mb_runner.sh simulator
+
+./mb_runner.sh test .
