@@ -28,7 +28,7 @@ before_deploy:
   - git config --global user.name "Travis CI"
   - git tag $GIT_TAG -a -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
   - git push -q https://${GH_TOKEN}@github.com/gcaufield/TogglIQ --tags
-  - gren release -P --token ${GH_TOKEN} --tags $(git describe)
+  - gren release -P --token ${GH_TOKEN} --tags=$(git describe --abbrev=0 --tags)..$(git describe --abbrev=0 --tags --exclude=*-rc*)
 deploy:
   provider: releases
   api_key:
