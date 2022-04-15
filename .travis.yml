@@ -25,7 +25,7 @@ before_deploy:
   - export VERSION=0.12.4
   - export GIT_TAG=v$VERSION.$TRAVIS_BUILD_NUMBER
   - git tag $GIT_TAG -a -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
-  - git push origin --tags
+  - git push -q https://$GH_TOKEN@github.com/gcaufield/ToggleIQ --tags
   - ls -R
 deploy:
   provider: releases
