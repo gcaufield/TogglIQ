@@ -4,7 +4,6 @@
     "wontfix",
     "duplicate"
   ],
-  "draft": true,
   "groupBy": {
     "Enhancements:": ["enhancement", "translations"],
     "New Features:": ["feature"],
