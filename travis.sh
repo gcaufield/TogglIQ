@@ -20,11 +20,19 @@ unzip "${SDK_FILE}" "bin/*" -d "${SDK_DIR}"
 unzip "${SDK_FILE}" "share/*" -d "${SDK_DIR}"
 
 ## Download devices from google drive
-gdown --id "${DEVICE_TOKEN}" -O "${DEVICE_FILE}"
+gdown -O "${DEVICE_FILE}" "${DEVICE_TOKEN}"
 mkdir -p "${DEVICE_DIR}"
 unzip "${DEVICE_FILE}" "Devices/*" -d "${DEVICE_DIR}"
 
-openssl enc -salt -aes-128-cbc -pbkdf2 -d -in developer_key.encrypt -out developer_key -k "${KEY_PASS}"
+if [[ -z "${KEY_PASS}" ]] then;
+  # If the build doesn't have the encryption key for the developer key, generate
+  # a new one just for the build
+  openssl genrsa -out developer_key.pem 4096
+  openssl pkcs8 -topk8 -inform PEM -outform DER -in developer_key.pem -out developer_key -nocrypt
+else
+  openssl enc -salt -aes-128-cbc -pbkdf2 -d -in developer_key.encrypt -out developer_key -k "${KEY_PASS}"
+fi
+
 
 export MB_HOME="${SDK_DIR}"
 export MB_PRIVATE_KEY="./developer_key"
