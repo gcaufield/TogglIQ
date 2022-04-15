@@ -10,11 +10,11 @@ class ApiServiceTest extends Tests.Test {
   }
 
   function testList() {
-    return {
-      :canSetApiKey => "canSetApiKey",
-      :canGetCurrentTimer => "canGetCurrentTimer",
-      :getCurrentTimerMakesWebRequest => "getCurrentTimerMakesWebRequest"
-    };
+    return [
+      :canSetApiKey,
+      :canGetCurrentTimer,
+      :getCurrentTimerMakesWebRequest
+    ];
   }
 
   function initialize() {
@@ -57,7 +57,7 @@ class ApiServiceTest extends Tests.Test {
     apiService.getCurrent(method(:callback));
 
     // Assert the expectations were met.
-    mockComms.verifyAndClear();
+    verifyMock(mockComms);
   }
 }
 

@@ -183,7 +183,7 @@ module Toggl {
           tempNewLine = tempNewLine + "...";
         }
 
-        var newLineLength = dc.getTextWidthInPixels(tempNewLine, font);
+        newLineLength = dc.getTextWidthInPixels(tempNewLine, font);
         if( newLineLength < ( width - ( 2 * margin ) ) ) {
           // This line is okay.
           currentLine = tempNewLine;

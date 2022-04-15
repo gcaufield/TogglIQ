@@ -3,7 +3,7 @@ sudo: required
 language: java
 jdk: openjdk11
 before_install:
-- sudo apt-get -y install libpng16-16 libwebkitgtk-1.0-0 zlib1g-dev libc6-dev libstdc++6
+- sudo apt-get -y install libpng16-16 libwebkit2gtk-4.0-37 zlib1g-dev libc6-dev libstdc++6
 - sudo apt-get -y install python3-pip python-dev
 - sudo apt-get -y install wget
 - DEBIAN_FRONTEND=noninteractive sudo apt-get -y install xorg xserver-xorg-video-dummy
@@ -16,13 +16,16 @@ install:
 - pip3 install mbpkg
 script:
 - "./travis.sh"
+before_deploy:
+- npm install -g github-release-notes
+- gren release --token ${GH_TOKEN} --tags $(git describe)
 deploy:
   provider: releases
   api_key:
-    secure: zXdz6PEhvbGx65ZV2giH1W6SPvpo43VYqjKtM3Cw8M8qesqIgNYM5P8iBSEGmha+uNHYjWCbo2IJwsezSuMwQ16qJQOqMRCcbkSQNdwJH5LHFuRSM6CPNUm7XcGbl1bsJ4fj7Wee89DD3JqSDNnN7Qo6rZdb1MQXpE63WjKvldzRmjutX/ql0hNFIpl/UMtEOOct2oKWfQAa0xr/+U7uuik5L/jq7MX34u8ZmQFI7HoAOPXI/gANm7ohx3CKIHRexIYSUiR90ag7X+uDZzJZRgD9WQdJLvgvwif2cO2n9TGEvHgiMWPi6e3iW0DxWw9cxDVCE9e7hIrVH/6UukKChZLJotUjDFcqkF6a45Mvw95p3gg4WONuU4W3FfTK5EgwII7QhSYVHqx8WV4wzfIuLbU3Z09Gxpc/CLVypGKPMM0llsBZdNgPDFTaim1NlQYIR15+FCXtTOQ8pzvSn0YeHoZVRJcer5fmA30BSqp4gpuoH7Vn2rSFxGyjA9MS1S+VerkJA4K/VQFkAViNFzTe1Esv39IGu3kk+I3bSiIlf2MqeyXQECwa+rPKYunXTodH6XkkkSPD0+6krEiPOKk0/JJgDTyzZ4H2f9Ym0bofNUb5LsghZ/ExvtfBuy02MuO9YSxhzHe+Bh6S63m1q7jNgP8BiZG6d9r8an06wvcgGaw=
+    secure: mkslwcib1t4znCWRxM6rUrkgN6UEP+n62jTH6vcjBHoTP3sXzTA2sdn13OYMxhC2IesNoDbQt45guQ0a/pdQLuIlU5W5jqAN8r5udQhFNegYVU6MgMWTMhSzi3ETBIblyOVyEKcSvguHhrhRTJRYtOvOQ1tsji3vuL4FMtScr4WDBbGjoAkavrIX9cPOhsFZ+O+xnXv/gFJN3TbMloCACT0ziFz1E4ekH/PwiIWVPVNPL90W7SUeOZX1jjRNXfwup0iT/Ud0xHYmy16SziNavGSi7JPRKBJoX6tzxPD/y+fsBvJ704YHnV/CM7UnW5tboJWB6VdBxEg9YTpDABs4+vOaj9K0sTzsbkUL+3K6i1AcX/yD/uGDrh/QKcgmRAIDv7k8m1TOnHsmiG1hJ70PYRrPo9ghjbUHg7632uqjH6KEsY7V0cNWTbixLGOviL+A38Zrz7hiB29JU6pEpf4TcC49X73QZYYPopKyESF2KwsbJ54OflGGxscoWI6+oUhTppuyvEZT3FWiF6OWtlMRO9Pc5tWem8R9urfjcAYRfngOL4TZU/Twl6qE1fav6ffzI71D+kYV1Sa8y5rKQR7LSVo0w0l2FDlP/pRgvgZVMn2DlINKV26BVZOWZLCyVRzaa+ARzYw1IifsCIG9X/+PWou+ZtnhJEyKXajUG6kr3Eg=
   on:
     tags: true
   skip_cleanup: 'true'
   draft: true
   file_glob: true
-  file: "bin/*.iq"
+  file: bin/*.iq
