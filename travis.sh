@@ -24,7 +24,7 @@ gdown -O "${DEVICE_FILE}" "${DEVICE_TOKEN}"
 mkdir -p "${DEVICE_DIR}"
 unzip "${DEVICE_FILE}" "Devices/*" -d "${DEVICE_DIR}"
 
-if [[ -z "${KEY_PASS}" ]] then;
+if [[ -z "${KEY_PASS}" ]]; then
   # If the build doesn't have the encryption key for the developer key, generate
   # a new one just for the build
   openssl genrsa -out developer_key.pem 4096
