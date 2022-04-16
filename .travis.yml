@@ -25,12 +25,10 @@ branches:
   except:
     - /^v[0-9]*/
 before_deploy:
-  - npm install -g github-release-notes
   - git config --global user.email "builds@travis-ci.com"
   - git config --global user.name "Travis CI"
   - git tag $GIT_TAG -a -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
   - git push -q https://${GH_TOKEN}@github.com/gcaufield/TogglIQ --tags
-  - gren release -P --token ${GH_TOKEN} --tags=$(git describe --abbrev=0 --tags)..$(git describe --abbrev=0 --tags --exclude=*-rc*)
 deploy:
   provider: releases
   api_key:
@@ -39,7 +37,11 @@ deploy:
     tags: false
     branch: feature/deploy
   skip_cleanup: 'true'
-  draft: true
+  draft: false
   prerelease: true
   file_glob: true
   file: bin/*.iq
+after_deploy:
+  - npm install -g github-release-notes
+  - gren release -P --token ${GH_TOKEN} --tags=$(git describe --abbrev=0 --tags)..$(git describe --abbrev=0 --tags --exclude=*-rc*) --override
+
