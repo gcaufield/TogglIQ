@@ -1,13 +1,14 @@
 {
-  "dataSource": "milestones",
-  "milestoneMatch": "{{tag_name}}",
+  "dataSource": "issues",
   "ignoreIssuesWith": [
     "wontfix",
     "duplicate"
   ],
-  "draft": true,
+  "prerelease": "true",
   "groupBy": {
-    "Enhancements:": ["enhancement"],
+    "Enhancements:": ["enhancement", "translations"],
+    "New Features:": ["feature"],
+    "New Devices:": ["devices"],
     "Bug Fixes:": ["bug"]
   }
 }
