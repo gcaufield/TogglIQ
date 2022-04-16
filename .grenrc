@@ -4,6 +4,7 @@
     "wontfix",
     "duplicate"
   ],
+  "prerelease": true,
   "groupBy": {
     "Enhancements:": ["enhancement", "translations"],
     "New Features:": ["feature"],

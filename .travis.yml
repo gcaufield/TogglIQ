@@ -35,8 +35,7 @@ deploy:
     secure: mkslwcib1t4znCWRxM6rUrkgN6UEP+n62jTH6vcjBHoTP3sXzTA2sdn13OYMxhC2IesNoDbQt45guQ0a/pdQLuIlU5W5jqAN8r5udQhFNegYVU6MgMWTMhSzi3ETBIblyOVyEKcSvguHhrhRTJRYtOvOQ1tsji3vuL4FMtScr4WDBbGjoAkavrIX9cPOhsFZ+O+xnXv/gFJN3TbMloCACT0ziFz1E4ekH/PwiIWVPVNPL90W7SUeOZX1jjRNXfwup0iT/Ud0xHYmy16SziNavGSi7JPRKBJoX6tzxPD/y+fsBvJ704YHnV/CM7UnW5tboJWB6VdBxEg9YTpDABs4+vOaj9K0sTzsbkUL+3K6i1AcX/yD/uGDrh/QKcgmRAIDv7k8m1TOnHsmiG1hJ70PYRrPo9ghjbUHg7632uqjH6KEsY7V0cNWTbixLGOviL+A38Zrz7hiB29JU6pEpf4TcC49X73QZYYPopKyESF2KwsbJ54OflGGxscoWI6+oUhTppuyvEZT3FWiF6OWtlMRO9Pc5tWem8R9urfjcAYRfngOL4TZU/Twl6qE1fav6ffzI71D+kYV1Sa8y5rKQR7LSVo0w0l2FDlP/pRgvgZVMn2DlINKV26BVZOWZLCyVRzaa+ARzYw1IifsCIG9X/+PWou+ZtnhJEyKXajUG6kr3Eg=
   on:
     tags: false
-    all_branches: true
-    condition: $TRAVIS_BRANCH =~ ^(main|feature.*)$
+    branch: feature/deploy
   skip_cleanup: 'true'
   draft: false
   file_glob: true
