@@ -169,8 +169,11 @@ function params_for_build
 
 function params_for_package
 {
-    GIT_VER=$(git describe --long --dirty)
-    PARAMS+="--output \"${OUT_DIR}/${APP_NAME}-${GIT_VER}.iq\" "
+    if [[ -z "${GIT_TAG}" ]]; then
+      GIT_TAG=$(git describe --long --dirty)
+    fi
+
+    PARAMS+="--output \"${OUT_DIR}/${APP_NAME}-${GIT_TAG}.iq\" "
     PARAMS+="--private-key \"${MB_PRIVATE_KEY}\" "
 
     PARAMS+="--package-app "
