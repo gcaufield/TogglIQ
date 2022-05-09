@@ -19,7 +19,7 @@ module Managers {
     }
 
     function equals(other) {
-      return (_description.equals(other._description));
+      return _description.equals(other._description) && _pid.equals(other._pid);
     }
 
     function getDescription() {
