@@ -57,6 +57,7 @@ module Managers {
     private var _tickManager;
 
     private var _items;
+    private var _pendingMenu;
 
     public function getDependencies() {
       return [:UiFactory, :TogglApiService, :TickManager];
@@ -104,6 +105,18 @@ module Managers {
       return _items;
     }
 
+    function onMenuReady() {
+      // We have enough elements
+      // Pop the progress spinner, and show the list.
+      WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
+
+      if(_items.size() > 0) {
+        WatchUi.pushView( _pendingMenu,
+            _uiFactory.get(:RecentTimerDelegate),
+            WatchUi.SLIDE_IMMEDIATE);
+      }
+    }
+
     function handleRequestData(data) {
       // Iterate the list in reverse order so the most recent timer is
       // listed first.
@@ -130,14 +143,11 @@ module Managers {
         _requestWindow += (48 * 3600);
         startRequest();
       } else {
-        // We have enough elements
-        // Pop the progress spinner, and show the list.
-        WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
-
-        if(_items.size() > 0) {
-          WatchUi.pushView( _uiFactory.get(:RecentTimerView),
-              _uiFactory.get(:RecentTimerDelegate),
-              WatchUi.SLIDE_IMMEDIATE);
+        if(_items.size() == 0) {
+          WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
+        } else {
+          _pendingMenu = _uiFactory.get(:RecentTimerView);
+          _pendingMenu.asyncInit(method(:onMenuReady));
         }
       }
     }
