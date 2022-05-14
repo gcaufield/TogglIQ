@@ -17,7 +17,7 @@ install:
 - pip3 install gdown
 - pip3 install mbpkg
 before_script:
-  - export VERSION=0.12.5
+  - export VERSION=0.13.0
   - export GIT_TAG=v$VERSION-rc.$TRAVIS_BUILD_NUMBER
 script:
 - "./travis.sh"
