@@ -14,6 +14,8 @@ module Views {
 
     private var _projectManager;
 
+    private var _onReady;
+
     public function getDependencies() {
       return [:RecentTimerManager, :ProjectManager];
     }
@@ -21,17 +23,21 @@ module Views {
     public function initialize(deps) {
       Menu2.initialize({:title => WatchUi.loadResource(Rez.Strings.StartRecentTimer)});
 
+      _onReady = null;
       _projectManager = deps[:ProjectManager];
 
       _items = deps[:RecentTimerManager].getRecentTimers();
       _iterator = _items.getIterator();
+    }
+
+    public function asyncInit(onReady) {
+      _onReady = onReady;
 
       populateNextItem();
     }
 
     function onNameRetrieved(id, projectName) {
       populateNextItem();
-      WatchUi.requestUpdate();
     }
 
     private function populateNextItem() {
@@ -53,6 +59,10 @@ module Views {
               _iterator.get(),
               null
               ));
+      }
+
+      if(_onReady != null) {
+        _onReady.invoke();
       }
     }
   }
