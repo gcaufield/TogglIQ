@@ -35,6 +35,10 @@ module Injection {
           .to(Managers.RecentTimerManager)
           .inSingletonScope();
 
+      bind(:ProjectManager)
+          .to(Managers.ProjectManager)
+          .inSingletonScope();
+
       // Bind the View interface based on the screen shape.
       bind(:View)
         .to(TogglView);
